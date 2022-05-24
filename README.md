@@ -5,12 +5,14 @@
 <br>
 
 ### 팀원소개
-
 - 이대규, 이주영, 안영빈
 
 ### 프로젝트소개
+- 한빛여행사는 여행 상품을 예약하는 기능과 ... 코로나가 완화됨에 따라 전국 관광지를 알리자는 취지에서 기획, 제작하였습니다.
 
-- 한빛여행사는 여행 상품을 예약하는 기능과 
+### 기능요약
+1. 여행사의 기본기능인 상품구매, 여행후기 작성 및 조회, 고객센터 이용을 할 수 있습니다.
+2. 부가기능으로 날씨정보, 오픈채팅, 추천경로 찾기가 가능합니다.
 
 ### 개발환경
 - Programming Language : <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
@@ -26,3 +28,6 @@
 - Browser : <img src="https://img.shields.io/badge/Google Chrome-4285F4?style=for-the-badge&logo=Google Chrome&logoColor=white"> 
 - OS : <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=Windows&logoColor=white"> 
 - IDE : <img src="https://img.shields.io/badge/Spring Tool Suite4-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+
+### 세부기능소개
+- 가나다라
