@@ -1,0 +1,56 @@
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.regTable{
+	text-align: center;
+	vertical-align: middle;
+}
+textarea {
+	resize: none;
+}
+.regTable tr > td:nth-child(odd){
+	width: 15%;
+	font-weight: bold;
+	background-color: #DDDDDD;
+	border-bottom: 1px solid white;
+}
+.regTable tr> td:nth-child(even){
+	width: 35%;
+}
+.regTable input[type=date]{
+	letter-spacing: 3px;
+	width: 80%;
+	text-align: center;
+	border: none;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}
+.hAddr {
+	position:absolute;
+	left:2px;
+	top:10px;
+	border-radius: 2px;
+	background:#fff;
+	background:rgba(255,255,255,0.8);
+	z-index:1;
+	padding:5px;
+}
+#centerAddr {
+	display:block;
+	margin-top:2px;
+	font-weight: normal;
+}
+.bAddr {
+	padding:5px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}

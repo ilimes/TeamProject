@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="container">
+	여행 상세 페이지 입니다!
+	<div class="row">
+		<div class="col-3">
+			<div class="btn">구매하기</div>
+		</div>
+		<div class="col-3">
+			<div class="btn">장바구니</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

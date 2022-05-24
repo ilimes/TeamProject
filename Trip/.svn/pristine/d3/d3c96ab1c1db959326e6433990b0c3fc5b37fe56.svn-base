@@ -1,0 +1,59 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.bookTable{
+	text-align: center;
+	vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="titleDiv">
+		<h3>예약 관리</h3>
+</div>
+<table class="table bookTable">
+	<thead>
+		<tr>
+			<td>예약번호</td>
+			<td>패키지명</td>
+			<td>예약자</td>
+			<td>여행인원</td>
+			<td>가격</td>
+			<td>연락처</td>
+			<td>예약일</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach items="${bookList }" var="book">
+			<tr>
+				<td>${book.bookNum }</td>
+				<td>${book.itemName }</td>
+				<td>${book.memName }</td>
+				<td>${book.travelers }명</td>
+				<td><fmt:formatNumber pattern="#,###원" value="${book.buyPrice }"/></td>
+				<td>${book.memTell }</td>
+				<td>${book.bookDate }</td>
+				<td><button class="btn btn-secondary" onclick="cancelBook();">예약취소</button></td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+<script type="text/javascript" src="/resources/js/admin/book_list.js"></script>
+</body>
+</html>

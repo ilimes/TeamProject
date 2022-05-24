@@ -1,0 +1,14 @@
+package com.project.trip.member.service;
+
+import com.project.trip.member.vo.MemberVO;
+import com.project.trip.member.vo.TempMemberVO;
+
+public interface MemberService {
+	void join(MemberVO memberVO);
+	MemberVO login(MemberVO memberVO);
+	String selectId(MemberVO memberVO);
+	String selectName(MemberVO memberVO);
+	TempMemberVO tempLogin(TempMemberVO tempMemberVO);
+	String findId(MemberVO memberVO);
+	MemberVO findPw(MemberVO memberVO);
+}

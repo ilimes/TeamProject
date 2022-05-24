@@ -1,0 +1,21 @@
+package com.project.trip.admin.service;
+
+import java.util.List;
+
+import com.project.trip.admin.vo.AdminMenuVO;
+import com.project.trip.admin.vo.MenuVO;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.item.vo.ItemCateVO;
+
+public interface AdminService {
+	
+	List<ItemCateVO> selectItemCategory();
+	
+	void regItem();
+	
+	List<MenuVO> selectMenuList();
+	
+	List<SideMenuVO> selectSideMenuList();
+	
+	List<AdminMenuVO> selectAdminMenuList();
+}

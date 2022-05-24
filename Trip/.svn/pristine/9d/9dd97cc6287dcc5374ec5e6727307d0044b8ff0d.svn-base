@@ -1,0 +1,50 @@
+package com.project.trip.item.vo;
+
+public class ItemVO {
+	private String ItemCode;
+	private String itemName;
+	private int price;
+	private String itemDetail;
+	private String tripDate;
+	private String CateCode;
+	
+	
+	public String getItemCode() {
+		return ItemCode;
+	}
+	public void setItemCode(String itemCode) {
+		ItemCode = itemCode;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getItemDetail() {
+		return itemDetail;
+	}
+	public void setItemDetail(String itemDetail) {
+		this.itemDetail = itemDetail;
+	}
+	public String getTripDate() {
+		return tripDate;
+	}
+	public void setTripDate(String tripDate) {
+		this.tripDate = tripDate;
+	}
+	public String getCateCode() {
+		return CateCode;
+	}
+	public void setCateCode(String cateCode) {
+		CateCode = cateCode;
+	}
+	
+
+}

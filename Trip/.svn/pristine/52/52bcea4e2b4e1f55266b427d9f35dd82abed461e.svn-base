@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- 어노테이션 사용으로 객체를 생성할 수 있게 하는 설정 -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- resource의 경로 지정 -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+	<resources mapping="/ckeditor/images/**" location="/ckeditor/images/" />
+	
+	<!-- 타일즈 설정 -->
+    <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+       <beans:property name="definitions">
+           <beans:list>
+               <beans:value>classpath:tiles-config.xml</beans:value>
+           </beans:list>
+       </beans:property>
+    </beans:bean>
+    
+    <beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+        <beans:property name="order" value="1" />
+  	</beans:bean>
+	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="2" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.project.trip.*.controller"/>
+	
+	<context:component-scan base-package="com.project.trip.interceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<!-- <mapping path="/admin/*"/>
+			<mapping path="/item/*"/>
+			<mapping path="/cart/*"/>
+			<mapping path="/member/*"/> -->
+			<mapping path="/*/*"/>
+			<mapping path="/member/myInfo"/>
+			<exclude-mapping path="/admin/deleteSelectedItem"/>
+			<exclude-mapping path="/admin/bookCancel"/>
+			<exclude-mapping path="/admin/boardReply"/>
+			<exclude-mapping path="/board/*"/>
+			<!-- <exclude-mapping path="/member/*"/> -->
+			<exclude-mapping path="/cart/insertCart"/>
+			<exclude-mapping path="/cart/deleteCarts"/>
+			<exclude-mapping path="/cart/updateItemCnt"/>
+			<exclude-mapping path="/buy/tripBook"/>
+			<exclude-mapping path="/buy/buyItem"/>
+			<exclude-mapping path="/buy/findBookInfo"/>
+			<exclude-mapping path="/item/updateReview"/>
+			<exclude-mapping path="/item/fileupload"/>
+			<exclude-mapping path="/item/ckImgSubmit"/>
+			<exclude-mapping path="/member/selectId"/>
+			<exclude-mapping path="/member/certification"/>
+			<exclude-mapping path="/member/joinSendMail"/>
+			<exclude-mapping path="/member/selectTell"/>
+			<exclude-mapping path="/member/changeMemberInfo"/>
+			<exclude-mapping path="/member/changePw"/>
+			<exclude-mapping path="/member/deactivateMember"/>
+			<exclude-mapping path="/member/findId"/>
+			<exclude-mapping path="/member/findPw"/>
+			<exclude-mapping path="/member/findPwSendMail"/>
+			<exclude-mapping path="/member/login"/>
+			<exclude-mapping path="/member/joinForm"/>
+			<exclude-mapping path="/member/findTempMember"/>
+			<beans:ref bean="menuInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/board/*"/>
+			<exclude-mapping path="/board/updateBoard"/>
+			<exclude-mapping path="/board/insertBoardReply"/>
+			<exclude-mapping path="/board/deleteBoardReply"/>
+			<exclude-mapping path="/board/modifyBoardReply"/>
+			<exclude-mapping path="/board/popUp"/>
+			<beans:ref bean="boardInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
+	<!-- <beans:bean id="testInterceptor" class="com.kh.shop.interceptor.TestInterceptor"/>
+	<beans:bean id="loginInterceptor" class="com.kh.shop.interceptor.LoginInterceptor"/> -->
+	
+	 
+    <!-- CORS setting : https://spring.io/blog/2015/06/08/cors-support-in-spring-framework#xml-namespace-->
+    <beans:import resource="classpath:config/cors-config.xml"/>
+    
+    <!-- 사진 업로드 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 최대 업로드 가능한 바이트 크기(바이트 단위), -1은 제한이 없음을 의미 -->
+		<beans:property name="maxUploadSize" value="10485760" />
+		<!-- 업로드 요청을 변환할 때 사용할 문자 인코딩 방식 -->
+		<beans:property name="defaultEncoding" value="utf-8" />
+	</beans:bean>
+	
+</beans:beans>

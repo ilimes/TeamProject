@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 40px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.form-label{
+	font-size: 18px;
+	font-weight: bold;
+}
+.btns, .btn{
+	padding: 0;
+	height: 40px;
+	font-size: 14px;
+}
+table{
+	text-align: center;
+	line-height: 35px;
+}	
+table > thead tr{
+	font-weight: bold;	
+}
+#aaa{
+	display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    line-height: 2.0;
+    letter-spacing: 1px;
+    border: none;
+    background-size: 200%;
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+}

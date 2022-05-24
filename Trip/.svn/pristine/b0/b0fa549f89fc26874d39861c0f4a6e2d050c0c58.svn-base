@@ -1,0 +1,45 @@
+package com.project.trip.admin.vo;
+
+import java.util.List;
+
+public class SlideImageVO {
+	private String imgCode;
+	private String originImgName;
+	private String attachedImgName;
+	private int imageIndex;
+	private List<SlideImageVO> slideImageList;
+	
+	
+	public List<SlideImageVO> getSlideImageList() {
+		return slideImageList;
+	}
+	public void setSlideImageList(List<SlideImageVO> slideImageList) {
+		this.slideImageList = slideImageList;
+	}
+	public int getImageIndex() {
+		return imageIndex;
+	}
+	public void setImageIndex(int imageIndex) {
+		this.imageIndex = imageIndex;
+	}
+	public String getImgCode() {
+		return imgCode;
+	}
+	public void setImgCode(String imgCode) {
+		this.imgCode = imgCode;
+	}
+	public String getOriginImgName() {
+		return originImgName;
+	}
+	public void setOriginImgName(String originImgName) {
+		this.originImgName = originImgName;
+	}
+	public String getAttachedImgName() {
+		return attachedImgName;
+	}
+	public void setAttachedImgName(String attachedImgName) {
+		this.attachedImgName = attachedImgName;
+	}
+	
+	
+}

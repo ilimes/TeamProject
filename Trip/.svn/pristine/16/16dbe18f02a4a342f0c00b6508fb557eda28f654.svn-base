@@ -1,0 +1,63 @@
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translate3d(-100%, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+ 
+.weatherDiv {
+    position: relative;
+    animation: fadeInUp 1.5s;
+    height: 600px;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+ 
+.hi {
+    position: relative;
+    animation: fadeInUp 1s;
+}
+.myWeatherDivs {
+    position: relative;
+    animation: fadeInUp 1s;
+}
+
+/*검색창 꾸미기*/
+#searchBlock {
+  background-color: transparent;
+}
+/*검색창 작성 중에도 효과 X*/
+#searchBlock:focus {
+  border-top: 0px none;
+  border-left: 0px none;
+  border-right: 0px none;
+  border-bottom: 1px solid gray;
+  outline: none;
+}
+
+/*마우스 커서가 올려져 있을 때*/
+#btnSearch:hover {
+  cursor: pointer;
+}

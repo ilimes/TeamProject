@@ -1,0 +1,113 @@
+//상품등록 JS
+function regItem(i, y){
+	
+	alert(i);
+	alert(y);
+	
+	var selectBox = document.getElementById('categorySelector').value;
+
+	//패키지명 미기입 시 alert
+	var bookName = document.getElementById('itemName').value;
+	
+	
+	if(bookName == ''){
+		alert('패키지명은 필수입력입니다.');
+		return ;
+	}
+	
+	//가격 미기입 시 alert
+	var bookPrice = document.getElementById('itemPrice').value;
+	
+	if(bookPrice == ''){
+		alert('가격은 필수입력입니다.');
+		return ;
+	}
+	
+	//카테고리 미선택 시 alert
+	if(selectBox == 1){
+		alert('카테고리를 선택해주세요');
+		return ;
+	}
+	
+	//폼태그 submit
+	var regItem = document.getElementById('itemRegForm');
+	alert('등록 완료');
+	regItem.submit();
+	
+}
+
+
+
+//달력 스타일 datepicker
+$.datepicker.setDefaults({
+  dateFormat: 'yy-mm-dd',
+  prevText: '이전 달',
+  nextText: '다음 달',
+  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+  showMonthAfterYear: true,
+  yearSuffix: '년'
+});
+
+//출발일, 도착일 이전날짜 비활성화
+$(function() {
+        $("#datepicker1").datepicker({
+            minDate: 0
+        });                           
+});
+$(function() {
+        $("#datepicker2").datepicker({
+            minDate: 1
+            
+        });                           
+});
+
+
+
+//우편번호 검색 ai
+function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+            	var roadAddr = data.roadAddress; //도로명주소
+            	document.getElementById("addr").value = roadAddr;
+            }
+
+        }).open();
+    }
+
+
+
+//-----------------------카카오맵 지도---------------------//
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(35.53500422503438, 129.31028385893904), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+// 지도를 클릭한 위치에 표출할 마커입니다
+var marker = new kakao.maps.Marker({ 
+    // 지도 중심좌표에 마커를 생성합니다 
+    position: map.getCenter() 
+}); 
+// 지도에 마커를 표시합니다
+marker.setMap(map);
+
+// 지도에 클릭 이벤트를 등록합니다
+// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng; 
+    
+    // 마커 위치를 클릭한 위치로 옮깁니다
+    marker.setPosition(latlng);
+    var i = latlng.getLat();
+    var y = latlng.getLng();
+    
+    regItem(i, y);
+});

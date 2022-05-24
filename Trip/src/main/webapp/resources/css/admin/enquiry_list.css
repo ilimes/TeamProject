@@ -1,0 +1,18 @@
+table {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+}
+thead td{
+	font-size: 19px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom: 1px solid black;
+}
+tbody td {
+	border-bottom: 1px solid #eeeeee;
+}
+tbody tr:hover{
+	font-weight: bold;
+	background-color: #D0C9C0;
+}

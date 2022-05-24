@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.reviewTable {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+}
+.reviewTable > tbody > tr > td {
+	border-bottom: 1px solid #eeeeee;
+}
+.reviewTable > tbody > tr > td:nth-child(odd){
+	font-size: 18px;
+	font-weight: bold;
+}
+.btnDiv{
+	display: flex;
+	justify-content: center;
+	margin: 20px 0 20px 0;
+}
+.btns{
+	margin: 7px;
+}
+.modal .btns{
+	height: 40px;
+}
+/* .replyDiv{
+	margin: 0 auto;
+	width: 750px;
+} */
+.replyDiv{
+	margin: 0 auto;
+	border: 1px solid #DDDDDD; 
+	padding: 20px 50px 60px 50px; 
+	border-radius: 20px;
+	width: 900px;
+}

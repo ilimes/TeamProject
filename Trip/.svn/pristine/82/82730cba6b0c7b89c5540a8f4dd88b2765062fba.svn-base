@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="itemMapper">
+	<resultMap type="com.project.trip.item.vo.ItemVO" id="item">
+		<id column="ITEM_CODE" property="itemCode" />
+		<result column="ITEM_NAME" property="itemName" />
+		<result column="ITEM_PRICE" property="itemPrice" />
+		<result column="ITEM_DETAIL" property="itemDetail" />
+		<result column="START_DATE" property="startDate" />
+		<result column="END_DATE" property="endDate" />
+		<result column="TRIP_DATE" property="tripDate" />
+		<result column="CATE_CODE" property="cateCode" />
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<collection property="imageList" resultMap="image"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.item.vo.ImageVO" id="image">
+		<id column="IMG_CODE" property="imgCode"/>
+		<result column="ORIGIN_IMG_NAME" property="originImgName"/>
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<result column="IS_MAIN" property="isMain"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+	</resultMap>
+	
+	<!-- 상품 목록 조회 쿼리 -->
+	<select id="selectItemList" resultMap="item">
+		SELECT ITEM.ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, ATTACHED_IMG_NAME
+			, TRIP_DATE
+			, CATE_CODE
+		FROM TRIP_ITEM ITEM, ITEM_IMAGE IMG
+		WHERE ITEM.ITEM_CODE = IMG.ITEM_CODE 
+		AND IS_MAIN = 'Y'
+		<if test="cateCode != null and !cateCode.equals('')">
+		AND CATE_CODE = #{cateCode}
+		</if>
+		ORDER BY ITEM.ITEM_CODE DESC
+	</select>
+	
+	<select id="selectItemDetail" resultMap="item">
+		SELECT ITEM.ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, ITEM_DETAIL
+			, ATTACHED_IMG_NAME
+			, TRIP_DATE
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+			, TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+			, CATE_CODE
+			, IS_MAIN
+		FROM TRIP_ITEM ITEM, ITEM_IMAGE IMG
+		WHERE ITEM.ITEM_CODE = IMG.ITEM_CODE 
+		<if test="cateCode != null and !cateCode.equals('')">
+		AND CATE_CODE = #{cateCode}
+		</if>
+		AND ITEM.ITEM_CODE = #{itemCode}
+	</select>
+	
+	
+	<!-- 삭제할 상품 이미지목록 -->
+	<select id="selectImageList" resultMap="image">
+		SELECT ATTACHED_IMG_NAME
+		FROM ITEM_IMAGE
+		WHERE ITEM_CODE IN 
+		<foreach item="itemCode" collection="itemCodeArr" open="(" close=")" separator=", ">#{itemCode}</foreach>
+	</select>
+	
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

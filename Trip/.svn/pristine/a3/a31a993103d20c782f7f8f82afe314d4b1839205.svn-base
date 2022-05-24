@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/resources/css/main/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<div>
+				<div>
+					<h4>고객님,</h4>
+				</div>
+				<div>
+					<h4>
+						<strong>어떤 여행을 꿈꾸시나요?</strong>
+					</h4>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input name="whereTrip" type="text" class="form-control"
+							placeholder="어디로 떠나세요?">
+					</div>
+					<div class="col-md-6">
+						<input name="whereTrip" type="text" class="form-control"
+							placeholder="인천/김포 출발">
+					</div>
+					<div class="col-md-6">
+						<input name="whereTrip" type="text" class="form-control"
+							placeholder="여행시작일 선택">
+					</div>
+					<div class="col-md-12">
+						<div>
+							<button type="button" class="btnBlack">검색</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 imageSlide">
+			<section class="carousel" aria-label="Gallery">
+				<ol class="carousel__viewport">
+					<li id="carousel__slide1" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper">
+							<a href="#carousel__slide4" class="carousel__prev">Go to
+								last slide</a> <a href="#carousel__slide2" class="carousel__next">Go
+								to next slide</a>
+						</div>
+					</li>
+					<li id="carousel__slide2" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide1"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide3" class="carousel__next">Go to next
+							slide</a>
+					</li>
+					<li id="carousel__slide3" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide2"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide4" class="carousel__next">Go to next
+							slide</a>
+					</li>
+					<li id="carousel__slide4" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide3"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide1" class="carousel__next">Go to first
+							slide</a>
+					</li>
+				</ol>
+				<aside class="carousel__navigation">
+					<ol class="carousel__navigation-list">
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide1" class="carousel__navigation-button">Go
+								to slide 1</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide2" class="carousel__navigation-button">Go
+								to slide 2</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide3" class="carousel__navigation-button">Go
+								to slide 3</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide4" class="carousel__navigation-button">Go
+								to slide 4</a></li>
+					</ol>
+				</aside>
+			</section>
+		</div>
+	</div>
+</div>
+</body>
+</html>

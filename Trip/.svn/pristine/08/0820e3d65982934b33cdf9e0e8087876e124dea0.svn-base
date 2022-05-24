@@ -1,0 +1,157 @@
+let map;
+let markers = [];
+
+function initMap() {
+  const haightAshbury = { lat: 35.53500422503438, lng: 129.31028385893904 };
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 12,
+    center: haightAshbury,
+    mapTypeId: "terrain",
+  });
+  // This event listener will call addMarker() when the map is clicked.
+  map.addListener("click", (event) => {
+    addMarker(event.latLng);
+  });
+  // add event listeners for the buttons
+  document
+    .getElementById("show-markers")
+    .addEventListener("click", showMarkers);
+  document
+    .getElementById("hide-markers")
+    .addEventListener("click", hideMarkers);
+  document
+    .getElementById("delete-markers")
+    .addEventListener("click", deleteMarkers);
+  // Adds a marker at the center of the map.
+  addMarker(haightAshbury);
+  
+  
+   let infoWindow = new google.maps.InfoWindow({
+    content: "Click the map to get Lat/Lng!",
+    position: haightAshbury,
+  });
+
+  infoWindow.open(map);
+  // Configure the click listener.
+  map.addListener("click", (mapsMouseEvent) => {
+    // Close the current InfoWindow.
+    infoWindow.close();
+    // Create a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      position: mapsMouseEvent.latLng,
+    });
+    infoWindow.setContent(
+      JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+    );
+    infoWindow.open(map);
+    //$('.fuck').append('<span> 아니다 </span>');
+  });
+  
+
+  map.addListener('click', function(e) {
+
+  console.log( e.latLng );
+});
+  
+  
+
+
+//-------------------------------------------------------------//
+ // 각 값들을 가지고 옵니다.
+        var geocoder = new google.maps.Geocoder;
+        // 클릭한 위치 확인.
+        map.addListener('click', function(e) {
+          // alert(e.latLng.lat());
+          console.log( e );
+          // 위경도 좌표를 요창할 객체를 만들어 줍니다.
+          var latlng = {
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng()
+          };
+          console.log( latlng );
+          geocoder.geocode({'location': latlng}, function(results, status) {
+
+            if( status === "OK" )
+            {
+              // console.log( results );
+              //alert( JSON.stringify( results ) );
+              var abc = results[0].formatted_address ;
+	$('.fuck').append('<span> ' + abc.substr(5) + ' </span>');
+            }else{
+              alert("주소를 못 가지고 왔습니다. 사람 사는 곳이 아닌 것 같습니다.");
+            }
+          });
+        });
+        
+//-------------------------------------------------------------------//
+
+const directionsRenderer = new google.maps.DirectionsRenderer();
+const directionsService = new google.maps.DirectionsService();
+
+directionsRenderer.setMap(map);
+  calculateAndDisplayRoute(directionsService, directionsRenderer);
+  document.getElementById("mode").addEventListener("change", () => {
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
+  });
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  const selectedMode = document.getElementById("mode").value;
+
+  directionsService
+    .route({
+      origin: { lat: 35.53032698487982, lng: -129.32728570639102 },
+      destination: { lat: 35.536892588392035, lng: -129.34771341024845 },
+      // Note that Javascript allows us to access the constant
+      // using square brackets and a string value as its
+      // "property."
+     
+      travelMode: google.maps.TravelMode[selectedMode],
+    }) 
+    .then((response) => {
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => window.alert("Directions request failed due to " + status));
+}
+
+//-------------------------------------------------------------------//
+
+}
+
+
+// Adds a marker to the map and push to the array.
+function addMarker(position) {
+  const marker = new google.maps.Marker({
+    position,
+    map,
+  });
+
+  markers.push(marker);
+}
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function hideMarkers() {
+  setMapOnAll(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+  setMapOnAll(map);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+  hideMarkers();
+  markers = [];
+}
+
+window.initMap = initMap;
+
+
+

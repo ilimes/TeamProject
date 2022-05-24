@@ -1,0 +1,35 @@
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 40px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="titleDiv">
+		<h3>여행 상세 페이지</h3>
+	</div>
+	여행 상세 페이지 입니다!<br><br>
+	<div class="row">
+		<div class="col-3">
+			<div class="btn" onclick="location.href='/buy/tripBook?itemCode=${itemVO.itemCode}';">구매하기</div>
+		</div>
+		<div class="col-3">
+			<div class="btn">장바구니</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.footDiv{
+	background-color: #DDDDDD;
+	height: 200px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 60px;
+	border-bottom-right-radius: 60px;
+}
+.footDiv > div:first-child {
+	width: 1300px; margin: 0 auto; padding-top: 20px; padding-left: 20px; padding-right: 20px;
+}
+.footDiv > div > div{
+	position:relative; float:left; width: 300px;
+}
+</style>
+</head>
+<body>
+<div class="footDiv">
+	<div>
+		<div>
+			<div><strong>프로젝트</strong></div>
+			<div>프로젝트명 : 여행사</div>
+			<div>조원 : 이대규, 이주영, 안영빈</div>
+		</div>
+		<div>
+			<div><strong>이메일</strong></div>
+			<div>abcd@gmail.com</div>
+			<div>abcd@gmail.com</div>
+			<div>abcd@gmail.com</div>
+		</div>
+		<div>
+			<div><strong>연락처</strong></div>
+			<div>010-1234-5678</div>
+			<div>010-1234-5678</div>
+			<div>010-1234-5678</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+</style>
+</head>
+<body>
+<div class="titleDiv">
+	<h3>${boardTitle }</h3>
+</div>
+이용약관 페이지 입니다.
+</body>
+</html>

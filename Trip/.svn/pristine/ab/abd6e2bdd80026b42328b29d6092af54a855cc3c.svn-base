@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.regTable{
+	text-align: center;
+	vertical-align: middle;
+}
+textarea {
+	resize: none;
+}
+.regTable tr > td:nth-child(1) {
+	width: 15%;
+}
+.regTable tr > td:nth-child(2) {
+	width: 35%;
+}
+.regTable tr > td:nth-child(3) {
+	width: 15%;
+}
+.regTable tr > td:nth-child(4) {
+	width: 35%;
+}
+.regTable input[type=date]{
+	letter-spacing: 3px;
+	width: 27%; 
+	text-align: center;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}
+
+</style>
+</head>
+<body>
+<div class="titleDiv">
+	<h3>${boardTitle }</h3>
+</div>
+<div class="row">
+	<form action="/board/boardWrite" method="post" id="boardWriteForm">
+	<input type="hidden" name="sideMenuCode" value="${sideMenuVO.sideMenuCode }">
+	<div class="col-12">
+		<table class="table regTable">
+			<tr>
+				<td>제목</td>
+				<td colspan="3"><input type="text" name="title" id="title" style="width: 98.5%;" required></td>
+			</tr>
+			<tr>
+				<td>내용</td>
+				<td colspan="3">
+					<textarea rows="10" cols="90%" name="content" id="content" required></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="1">
+					<label for="img" class="form-label">첨부파일</label>
+				</td>
+				<td colspan="3">
+			    	<input class="form-control" type="file" name="Img" id="img">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="btnDiv">
+				<div class="btnBlack" onclick="boardWrite();" style="width: 130px;">등록하기</div>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<script type="text/javascript" src="/resources/js/board_write_form.js"></script>
+</body>
+</html>

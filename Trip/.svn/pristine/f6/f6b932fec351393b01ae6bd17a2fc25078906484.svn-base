@@ -1,0 +1,9 @@
+package com.project.trip;
+
+public class Snippet {
+	private String searchOrderNum;
+		private String searchBuyer;
+		private String searchFromDate;
+		private String searchToDate;
+}
+

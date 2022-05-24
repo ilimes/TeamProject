@@ -1,0 +1,53 @@
+//상품등록 JS
+function regItem(){
+	
+	var selectBox = document.getElementById('categorySelector').value;
+	
+	//패키지명 미기입 시 alert
+	var bookName = document.getElementById('itemName').value;
+	
+	if(bookName == ''){
+		alert('패키지명은 필수입력입니다.');
+		return ;
+	}
+	
+	//가격 미기입 시 alert
+	var bookPrice = document.getElementById('itemPrice').value;
+	
+	if(bookPrice == ''){
+		alert('가격은 필수입력입니다.');
+		return ;
+	}
+	
+	//카테고리 미선택 시 alert
+	if(selectBox == 1){
+		alert('카테고리를 선택해주세요');
+		return ;
+	}
+	
+	//폼태그 submit
+	var regItem = document.getElementById('itemRegForm');
+	alert('등록 완료');
+	regItem.submit();
+	
+}
+
+// 이전날짜 비활성화 나중에 작성
+/*$.datepicker.setDefaults({
+  dateFormat: 'yy-mm-dd',
+  prevText: '이전 달',
+  nextText: '다음 달',
+  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+  showMonthAfterYear: true,
+  yearSuffix: '년'
+});
+
+$(function() {
+	$( ".datepicker" ).datepicker({ minDate: 0});
+});*/
+
+

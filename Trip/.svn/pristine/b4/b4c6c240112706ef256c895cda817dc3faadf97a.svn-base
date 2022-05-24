@@ -1,0 +1,287 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv {
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 40px;
+}
+
+h3 {
+	font-weight: bold;
+	line-height: 1.3em;
+}
+
+#detail .row, #detail .col-4 {
+	margin-bottom: 30px;
+}
+
+#btnDiv {
+	margin: 20px 0 20px 0;
+}
+
+table {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+	font-size: 15px;
+}
+
+tbody td:nth-child(1) {
+	width: 15%
+}
+
+tbody td:nth-child(2) {
+	width: 45%
+}
+
+tbody td:nth-child(3) {
+	width: 20%
+}
+
+tbody td:nth-child(3) {
+	width: 20%
+}
+
+tbody td {
+	border-bottom: 1px solid #eeeeee;
+}
+
+/* 한줄에 나오게 하기 */
+.reviewTitle, .reviewWriter {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	display: -webkit-box;
+	-webkit-line-clamp: 1; /* n */
+	-webkit-box-orient: vertical;
+}
+
+/* 이미지 슬라이더 */
+
+/* 초기화 */
+/* * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+} */
+
+.slides li {
+	list-style-type: none;
+}
+/* 보여줄 구간의 높이와 넓이 설정 */
+#slideShow {
+	width: 800px;
+	height: 380px;
+	position: relative;
+	margin: 50px auto;
+	overflow: hidden;
+	/*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
+}
+
+.slides {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 3500px;
+	/* 슬라이드할 사진과 마진 총 넓이 */
+	transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
+	
+} /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
+.slides li:first-child {
+	margin-left: 118px;
+} /* 슬라이드들 옆으로 정렬 */
+.slides li:not(:last-child) {
+	float: left;
+	margin-right: 270px;
+}
+.slides li img{
+	width: 500px;
+	height: 380px;
+}
+
+.slides li {
+	float: left;
+}
+
+.controller span {
+	position: absolute;
+	background-color: transparent;
+	color: black;
+	text-align: center;
+	border-radius: 50%;
+	padding: 10px 20px;
+	top: 50%;
+	font-size: 1.3em;
+	cursor: pointer;
+} /* 이전, 다음 화살표에 마우스 커서가 올라가 있을때 */
+.controller span:hover {
+	background-color: rgba(128, 128, 128, 0.11);
+}
+
+.prev {
+	left: 10px;
+} /* 이전 화살표에 마우스 커서가 올라가 있을때 이전 화살표가 살짝 왼쪽으로 이동하는 효과*/
+.prev:hover {
+	/* transform: translateX(-10px); */
+	font-weight: bold;
+}
+
+.next {
+	right: 10px;
+} /* 다음 화살표에 마우스 커서가 올라가 있을때 이전 화살표가 살짝 오른쪽으로 이동하는 효과*/
+.next:hover {
+	/* transform: translateX(10px); */
+	font-weight: bold;
+}
+#mapModal:hover{
+	cursor: pointer;
+	font-weight: bold;
+	color: #2A2550;
+}
+</style>
+<link href="/resources/css/item/item_detail.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid" id="detail">
+<input type="hidden" id="latitude" value="${itemInfo.latitude }">
+<input type="hidden" id="longitude" value="${itemInfo.longitude }">
+<input type="hidden" id="tripAddr" value="${itemInfo.tripAddr }">
+	<form action="" method="post" id="itemForm">
+	<input type="hidden" id="itemCode" name="itemCode" value="${itemInfo.itemCode }">
+	<input type="hidden" id="buyPrice" name="buyPrice" value="${itemInfo.itemPrice }">
+	<div class="row justify-content-center">
+		<div class="col-8">
+			<div class="titleDiv">
+				<h3>여행 상세 정보</h3>
+			</div>
+		</div>
+		<div class="row g-2 justify-content-center">
+			<div class="col-4" style="text-align: center;">
+				<img alt="" src="/resources/images/${itemInfo.attachedImgName }" style="width: 100%; height: 300px; border-radius: 20px;" id="attachedImgName"><br>
+			</div>
+			<div class="col-4" style="padding-left: 20px;">
+				<div id="itemName"><h4><strong>${itemInfo.itemName }</strong></h4></div>
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-range" viewBox="0 0 16 16">
+					  <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1zM1 9h4a1 1 0 0 1 0 2H1V9z"/>
+					  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+					</svg> ${itemInfo.tripDate } (<strong>${itemInfo.startDate } ~ ${itemInfo.endDate }</strong>)</div>
+				<div style="font-size: 20px;">
+					<span style="color: #725efe;">★</span> ${itemInfo.rateAvg }
+				</div>
+				<div>
+					<span style="font-size: 12.5px; margin-left: 1px; padding: 5px; cursor: pointer; background-color: #DDD; border-radius: 8px;" id="mapModal" data-bs-toggle="modal" data-bs-target="#exampleModal">지도보기</span>
+				</div>
+				<div style="margin-top: 20px; line-height: 2.2em; text-align: right;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+					  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+					  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+					</svg> 성인 <input type="number" class="form-control" id="travelers" name="travelers" min="1" value="1" style="display:inline-block; width: 100px; height: 30px; text-align: center;"> 인<br>
+					<span style="display: none;" id="buyPriceSpan" data-price="${itemInfo.itemPrice }">${itemInfo.itemPrice }</span>
+					<div style="font-size: 28px; font-weight: bold; color: #111; margin-bottom: 10px;"><span id="totalbuyPriceSpan"><fmt:formatNumber pattern="#,###원">${itemInfo.itemPrice }</fmt:formatNumber></span></div>
+				</div>
+			</div>
+			<div class="row justify-content-center" id="btnDiv">
+				<input type="hidden" id="memId" value="${sessionScope.loginInfo.memId }">
+				<div class="col-3">
+					<div class="btns" onclick="buyItem();"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+  <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+</svg> 구매하기</div>
+				</div>
+				<div class="col-3">
+					<div class="btns" onclick="insertCart();"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+</svg> 장바구니 담기</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="titleDiv">
+					<h3>여행 설명</h3>
+				</div>
+				<div style="margin-bottom: 40px;" id="itemDetail">${itemInfo.itemDetail }</div>
+			</div>
+			<div class="col-8">
+				<div class="titleDiv">
+					<h3>상세 이미지</h3>
+				</div>
+			</div>
+			<div class="col-8" style="margin-bottom: 40px;">
+				<%-- <c:forEach items="${itemInfo.imageList }" var="img">
+					<c:if test="${img.isMain eq 'N' }">
+						<img src="/resources/images/${img.attachedImgName }" width="100%">
+					</c:if>
+				</c:forEach> --%>
+				
+				<!-- 상세 이미지 슬라이더 만들 곳 -->
+				<div id="slideShow">
+					<ul class="slides">
+					<c:forEach items="${itemInfo.imageList }" var="img">
+						<c:if test="${img.isMain eq 'N' }">
+							<li><img src="/resources/images/${img.attachedImgName }"></li>
+						</c:if>
+					</c:forEach>
+					</ul>
+					<p class="controller">
+						<!-- &lang: 왼쪽 방향 화살표 &rang: 오른쪽 방향 화살표 -->
+						<span class="prev">&lang;</span> <span class="next">&rang;</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="titleDiv">
+					<h3>여행 후기</h3>
+				</div>
+			</div>
+			<div class="col-8">
+				<table>
+					<c:forEach items="${reviewList }" var="review" varStatus="vS">
+						<c:if test="${review.itemCode eq itemInfo.itemCode }">
+							<tr>
+								<td style="color: #725efe">
+								<c:forEach begin="1" end="${review.itemRate }">
+									★
+								</c:forEach>
+								</td>
+								<td><div class="reviewTitle"><a href="/item/reviewDetail?menuCode=MENU_002&reviewNum=${review.reviewNum }">${review.title }</a></div></td>
+								<td><div class="reviewWriter">${review.writer }</div></td>
+								<td>${review.createDate }</td>
+							</tr>
+						</c:if>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+
+
+<!-- /////////////////////지도보기 모달///////////////////// -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><strong>여행 상세 지도</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<div id="map" style="width:100%; height:500px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=667f5ed1f72a801ed09ae8d4668f32a8&libraries=services"></script>
+<script src="/resources/js/item/slideImg.js" type="text/javascript"></script>
+<script src="/resources/js/item/item_detail.js?ver=12" type="text/javascript"></script>
+</body>
+</html>

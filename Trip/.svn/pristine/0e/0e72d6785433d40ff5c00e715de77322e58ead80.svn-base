@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="buyMapper">
+	<resultMap type="com.project.trip.buy.vo.BuyVO" id="buy">
+	<id column="BOOK_NUM" property="bookNum"/>
+	<result column="MEM_ID" property="memId"/>
+	<result column="ITEM_CODE" property="itemCode"/>
+	<result column="BUY_PRICE" property="buyPrice"/>
+	<result column="TRAVELERS" property="travelers"/>
+	<result column="BOOK_DATE" property="bookDate"/>
+	</resultMap>
+	
+	<!-- 상품 개별구매 -->
+	<insert id="bookItem">
+		INSERT INTO BOOK_ITEM (
+			BOOK_NUM
+			, MEM_ID
+			, ITEM_CODE
+			, BUY_PRICE
+			, TRAVELERS
+		) VALUES (
+			(SELECT TO_CHAR(SYSDATE, 'MMDDHHMMSS') || SUBSTR(MEM_BIRTHDAY,1,3) FROM TRIP_MEMBER
+			WHERE MEM_ID = #{memId})
+			, #{memId}
+			, #{itemCode}
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{itemCode}) * #{travelers}
+			, #{travelers}
+		)
+	</insert>
+	
+	<!-- 선택한 상품 구매 -->
+	<insert id="selectedBuyCartList">
+		INSERT INTO BOOK_ITEM(
+			BOOK_NUM
+			, MEM_ID
+			, ITEM_CODE
+			, BUY_PRICE
+			, TRAVELERS
+		)
+		<foreach collection="buyList" item="buyInfo" open="(" close=")" separator="UNION ALL">
+		SELECT
+			(SELECT TO_CHAR(SYSDATE, 'MMDDHHMMSS') || SUBSTR(MEM_BIRTHDAY,1,3) FROM TRIP_MEMBER
+			WHERE MEM_ID = #{buyInfo.memId}) AS BOOK_NUM
+			, #{buyInfo.memId}
+			, #{buyInfo.itemCode}
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{buyInfo.itemCode}) * #{buyInfo.travelers} AS BUY_PRICE
+			, #{buyInfo.travelers}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<select id="selectBookList" resultMap="buy">
+		SELECT BOOK_NUM
+	        , ITEM.ITEM_NAME
+	        , (ITEM.ITEM_PRICE * BOOK.TRAVELERS) AS BUY_PRICE
+	        , MEM.MEM_NAME
+	        , TRAVELERS
+	        , BOOK.BOOK_DATE
+	        , ITEM.START_DATE
+	        , ITEM.END_DATE
+	    FROM BOOK_ITEM BOOK, TRIP_MEMBER MEM, TRIP_ITEM ITEM
+	    WHERE BOOK.MEM_ID = MEM.MEM_ID
+	    AND BOOK.ITEM_CODE = ITEM.ITEM_CODE
+	    ORDER BY BOOK.BOOK_DATE DESC
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

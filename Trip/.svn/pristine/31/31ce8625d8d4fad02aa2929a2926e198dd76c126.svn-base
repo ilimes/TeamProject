@@ -1,0 +1,9 @@
+package com.project.trip.member.service;
+
+import com.project.trip.member.vo.MemberVO;
+
+public interface MemberService {
+	void join(MemberVO memberVO);
+	MemberVO login(MemberVO memberVO);
+	String selectId();
+}

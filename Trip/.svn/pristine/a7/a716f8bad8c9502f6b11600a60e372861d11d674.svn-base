@@ -1,0 +1,36 @@
+package com.project.trip.admin.vo;
+
+public class SubMenuVO {
+	private String subMenuCode;
+	private String subMenuName;
+	private String subMenuUri;
+	private String menuCode;
+	
+	public String getSubMenuCode() {
+		return subMenuCode;
+	}
+	public void setSubMenuCode(String subMenuCode) {
+		this.subMenuCode = subMenuCode;
+	}
+	public String getSubMenuName() {
+		return subMenuName;
+	}
+	public void setSubMenuName(String subMenuName) {
+		this.subMenuName = subMenuName;
+	}
+	public String getMenuUri() {
+		return subMenuUri;
+	}
+	public void setMenuUri(String menuUri) {
+		this.subMenuUri = menuUri;
+	}
+	public String getMenuCode() {
+		return menuCode;
+	}
+	public void setMenuCode(String menuCode) {
+		this.menuCode = menuCode;
+	}
+	
+	
+	
+}

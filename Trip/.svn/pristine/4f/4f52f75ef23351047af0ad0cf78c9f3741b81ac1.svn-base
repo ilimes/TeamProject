@@ -1,0 +1,68 @@
+package com.project.trip.board.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.board.service.BoardService;
+
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+	
+	@Resource(name="adminService")
+	private AdminService adminService;
+	
+	@Resource(name="boardService")
+	private BoardService boardService;
+	
+	@GetMapping("/notice")
+	public String notice(Model model, SideMenuVO sideMenuVO) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		
+		//타이틀 보내기
+		model.addAttribute("boardTitle", "공지사항");
+		
+		//메뉴 코드 보내기
+		sideMenuVO.setSideMenuCode("SIDE_MENU_001");
+		
+		//게시글 목록 보내기
+		model.addAttribute("boardList", boardService.selectBoardList(sideMenuVO));
+		
+		//사이드메뉴 리스트 보내기
+		model.addAttribute("sideMenuList", adminService.selectSideMenuList());
+		
+		return "board/boardList";
+	}
+	
+	@GetMapping("/question")
+	public String qustion(Model model, SideMenuVO sideMenuVO) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		
+		//타이틀 보내기
+		model.addAttribute("boardTitle", "1:1문의");
+		
+		//메뉴 코드 보내기
+		sideMenuVO.setSideMenuCode("SIDE_MENU_002");
+		
+		//게시글 목록 보내기
+		model.addAttribute("boardList", boardService.selectBoardList(sideMenuVO));
+		
+		//사이드메뉴 리스트 보내기
+		model.addAttribute("sideMenuList", adminService.selectSideMenuList());
+		
+		return "board/boardList";
+	}
+
+}

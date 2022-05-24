@@ -1,0 +1,63 @@
+//------------------------- 수량 변경 시 이벤트 진행 코드 -------------------------------//
+//수량 input 태그 들고옴
+var ea = document.getElementById('ea');
+
+//수량 input 태그가 클릭 될 때마다....
+/*ea.addEventListener('click', function(){
+	alert(111);
+});*/
+
+//수량 input 태그 값이 바뀔 때 마다...
+/*ea.addEventListener('change', function(){
+	alert(111);
+});*/
+
+ea.addEventListener('change', setTotalPrice);
+ea.addEventListener('keyup', setTotalPrice);
+
+function setTotalPrice(){
+	if(ea.value < 0 || ea.value == ""){
+		ea.value = 1;
+	}
+	
+	//개당 가격 정보
+	var price = document.getElementById('priceSpan').dataset.price;
+	//수량
+	var cnt = ea.value;
+	
+	//var totalPrice = (price * cnt).toLocaleString("ko-KR", { style: 'currency', currency: 'KRW' }); // <- 원화표시 앞에 붙이기
+	var totalPrice = (price * cnt).toLocaleString();
+	
+	document.getElementById('totalPriceSpan').innerText = totalPrice;
+}
+
+// ----------------- 장바구니 코드 ---------------- //
+
+function insertCart(){
+/*	var formTag = document.getElementById('itemForm');
+	formTag.action = '/cart/insertCart';
+	formTag.submit();*/
+	
+	var itemCode = document.getElementById('itemCode').value;
+	var travelers = document.getElementById('travelers').value;
+	
+	$.ajax({
+    url: '/cart/insertCart', //요청경로
+    type: 'post',
+    data:{'itemCode':itemCode, 'travelers':travelers}, //필요한 데이터 '데이터이름':값
+    success: function(result) {
+      //ajax 실행 성공 후 실행할 코드 작성
+      var result = confirm(result + '개 등록 성공! 장바구니로 이동하시겠습니까?');
+      
+      if(result){
+		location.href='/cart/cartList';
+	  }
+      
+    },
+    error: function(){
+      //ajax 실행 실패 시 실행되는 구간
+       alert('실패');
+    }
+});
+	
+}

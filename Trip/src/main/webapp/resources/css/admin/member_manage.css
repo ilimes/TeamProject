@@ -1,0 +1,32 @@
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+table{
+	text-align: center;
+	vertical-align: middle;
+}
+thead tr{
+	font-weight: bold;
+}
+table td{
+	height: 50px;
+	vertical-align: middle;
+}
+
+table tr, td {
+	padding: 6px;
+	letter-spacing: 1px;
+}
+tbody td:first-child:hover{
+	font-weight: bold;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}

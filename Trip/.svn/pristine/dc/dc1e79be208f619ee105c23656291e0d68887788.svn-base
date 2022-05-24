@@ -1,0 +1,48 @@
+package com.project.trip.item.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.project.trip.admin.service.AdminService;
+
+@Controller
+@RequestMapping("/item")
+public class ItemController {
+	
+	@Resource(name="adminService")
+	private AdminService adminService;
+	
+	@GetMapping("/mainPage")
+	public String mainPage(Model model) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		//서브 메뉴 리스트 보내기
+		model.addAttribute("itemCateList", adminService.selectItemCategory());
+		return "template/main";
+	}
+	
+	@GetMapping("/itemList")
+	public String itemList(Model model) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		//서브 메뉴 리스트 보내기
+		model.addAttribute("itemCateList", adminService.selectItemCategory());
+		return "item/item_list";
+	}
+	
+	//3분할 테스트
+	@GetMapping("/testList")
+	public String secondItemList() {
+		return "second/test";
+	}
+	
+	@GetMapping("/itemDetail")
+	public String itemDetail() {
+		return "item/item_detail";
+	}
+	
+}

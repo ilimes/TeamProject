@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="boardMapper">
+	<resultMap type="com.project.trip.board.vo.BoardVO" id="board">
+		<id column="BOARD_NUM" 							property="boardNum"/>
+		<result column="TITLE" 							property="title"/>
+		<result column="CONTENT" 						property="content"/>
+		<result column="WRITER" 						property="writer"/>
+		<result column="MEM_NAME" 						property="memName"/>
+		<result column="CREATE_DATE" 					property="createDate"/>
+		<result column="READ_CNT" 						property="readCnt"/>
+		<result column="SIDE_MENU_CODE" 				property="sideMenuCode"/>
+		<result column="IS_MAIN" 						property="isMain"/>
+		<result column="ROW_NUM" 						property="rowNum"/>
+		<result column="REPLY_CNT"						property="replyCnt"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.board.vo.BoardReplyVO" id="reply">
+		<id column="REPLY_NUM" 							property="replyNum"/>
+		<result column="CONTENT" 						property="content"/>
+		<result column="CREATE_DATE" 					property="createDate"/>
+		<result column="BOARD_NUM" 						property="boardNum"/>
+		<result column="WRITER" 						property="writer"/>
+		<result column="MEM_NAME" 						property="memName"/>
+	</resultMap>
+	
+	<select id="selectBoardList" resultMap="board">
+		SELECT BOARD_NUM
+		    , TITLE
+		    <!-- , CONTENT -->
+		    , WRITER
+		    , CREATE_DATE
+		    , READ_CNT
+		    , SIDE_MENU_CODE
+		    , IS_MAIN
+		    , REPLY_CNT
+		    , ROW_NUM
+		FROM (
+			SELECT BOARD_NUM
+		        , TITLE
+		        <!-- , CONTENT -->
+		        , WRITER
+		        , CREATE_DATE
+		        , READ_CNT
+		        , SIDE_MENU_CODE
+		        , IS_MAIN
+		        , REPLY_CNT
+		        , ROWNUM AS ROW_NUM
+		    FROM (
+		    	SELECT BOARD_NUM
+		            , TITLE
+		           	<!--  , CONTENT -->
+		            , WRITER
+		            , TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+		            , READ_CNT
+		            , SIDE_MENU_CODE
+		            , IS_MAIN
+		            , (SELECT COUNT(REPLY_NUM)
+		            	FROM BOARD_REPLY
+		            	WHERE BOARD_NUM = TRIP_BOARD.BOARD_NUM) AS REPLY_CNT
+		        FROM TRIP_BOARD
+		        WHERE SIDE_MENU_CODE = #{sideMenuCode}
+		        <choose>
+					<when test="title != null and !title.equals('') and content != null and !content.equals('')">
+						AND UPPER(CONTENT) LIKE UPPER('%'||#{content}||'%')
+						OR UPPER(TITLE) LIKE UPPER('%'||#{title}||'%')
+					</when>
+					<when test="title != null and !title.equals('')">
+						AND UPPER(TITLE) LIKE UPPER('%'||#{title}||'%')
+					</when>
+					<when test="content != null and !content.equals('')">
+						AND UPPER(CONTENT) LIKE UPPER('%'||#{content}||'%')
+					</when>
+					<when test="writer != null and !writer.equals('')">
+						AND (UPPER(WRITER) LIKE UPPER('%'||#{writer}||'%')
+						OR UPPER((SELECT MEM_NAME
+									FROM TRIP_MEMBER
+									WHERE MEM_ID = TRIP_BOARD.WRITER)) LIKE UPPER('%'||#{writer}||'%'))
+					</when>
+				</choose>
+		        ORDER BY BOARD_NUM DESC
+		        )
+	        )
+       WHERE ROW_NUM &gt;= #{startNum} AND ROW_NUM &lt;= #{endNum}
+       <if test="sideMenuCode == 'SIDE_MENU_002'">
+       AND WRITER = #{writer}
+       </if>
+	</select>
+	
+	<select id="selectAllBoardList" resultMap="board">
+		SELECT BOARD_NUM
+            , TITLE
+            <!-- , CONTENT -->
+            , WRITER
+            , TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+            , READ_CNT
+            , SIDE_MENU_CODE
+            , IS_MAIN
+        FROM TRIP_BOARD
+        WHERE SIDE_MENU_CODE = #{sideMenuCode}
+        ORDER BY BOARD_NUM DESC
+	</select>
+	
+	<select id="selectBoard" resultMap="board">
+		SELECT BOARD_NUM
+			, TITLE
+			, CONTENT
+			, WRITER
+			, (SELECT MEM_NAME
+				FROM TRIP_MEMBER
+				WHERE MEM_ID = TRIP_BOARD.WRITER) AS MEM_NAME
+			, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+			, READ_CNT
+			, SIDE_MENU_CODE
+			, IS_MAIN
+		FROM TRIP_BOARD
+		WHERE BOARD_NUM = #{boardNum}
+	</select>
+	
+	<select id="selectBoardListCnt" resultType="int">
+		SELECT COUNT(BOARD_NUM)
+		FROM TRIP_BOARD
+		WHERE SIDE_MENU_CODE = #{sideMenuCode}
+		<if test="sideMenuCode == 'SIDE_MENU_001'">
+			<choose>
+				<when test="title != null and !title.equals('') and content != null and !content.equals('')">
+					AND UPPER(CONTENT) LIKE UPPER('%'||#{content}||'%')
+					OR UPPER(TITLE) LIKE UPPER('%'||#{title}||'%')
+				</when>
+				<when test="title != null and !title.equals('')">
+					AND UPPER(TITLE) LIKE UPPER('%'||#{title}||'%')
+				</when>
+				<when test="content != null and !content.equals('')">
+					AND UPPER(CONTENT) LIKE UPPER('%'||#{content}||'%')
+				</when>
+				<when test="writer != null and !writer.equals('')">
+					AND (UPPER(WRITER) LIKE UPPER('%'||#{writer}||'%')
+					OR UPPER((SELECT MEM_NAME
+								FROM TRIP_MEMBER
+								WHERE MEM_ID = TRIP_BOARD.WRITER)) LIKE UPPER('%'||#{writer}||'%'))
+				</when>
+			</choose>
+		</if>
+	   <if test="sideMenuCode == 'SIDE_MENU_002'">
+       AND WRITER = #{writer}
+       </if>
+	</select>
+	
+	<insert id="insertBoard">
+		INSERT INTO TRIP_BOARD (
+			BOARD_NUM
+			, TITLE
+			, CONTENT
+			, WRITER
+			, SIDE_MENU_CODE
+			<if test='isMain == "Y"'>
+			, IS_MAIN
+			</if>
+		) VALUES (
+			(SELECT NVL(MAX(BOARD_NUM), 0) + 1 FROM TRIP_BOARD)
+			, #{title}
+			, #{content}
+			, #{writer}
+			, #{sideMenuCode}
+			<if test='isMain == "Y"'>
+			, #{isMain}
+			</if>
+		)
+	</insert>
+	
+	<update id="updateReadCnt">
+		UPDATE TRIP_BOARD 
+		SET READ_CNT = READ_CNT + 1
+		WHERE BOARD_NUM = #{boardNum}
+	</update>
+	
+	<delete id="deleteBoard">
+		DELETE TRIP_BOARD
+		WHERE BOARD_NUM = #{boardNum}
+	</delete>
+	
+	<update id="updateBoard">
+		UPDATE TRIP_BOARD
+		SET TITLE = #{title}
+			, CONTENT = #{content}
+			, IS_MAIN = #{isMain}
+		WHERE BOARD_NUM = #{boardNum}
+	</update>
+	
+	<select id="selectNoticeList" resultMap="board">
+		SELECT BOARD_NUM
+			, TITLE
+			, IS_MAIN
+		FROM TRIP_BOARD
+		WHERE IS_MAIN = 'Y'
+		ORDER BY BOARD_NUM ASC
+	</select>
+	
+	<insert id="insertBoardReply">
+		INSERT INTO BOARD_REPLY (
+			REPLY_NUM
+			, CONTENT
+			, WRITER
+			, BOARD_NUM
+		) VALUES (
+			(SELECT NVL(MAX(REPLY_NUM), 0) + 1 FROM BOARD_REPLY)
+			, #{content}
+			, #{writer}
+			, #{boardNum} 
+		)
+	</insert>
+	
+	<delete id="deleteBoardReply">
+		DELETE BOARD_REPLY
+		WHERE REPLY_NUM = #{replyNum}
+	</delete>
+	
+	<select id="selectReplyList" resultMap="reply">
+		SELECT REPLY_NUM
+			, CONTENT
+			, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+			, BOARD_NUM
+			, WRITER
+			, (SELECT MEM_NAME
+				FROM TRIP_MEMBER
+				WHERE MEM_ID = BOARD_REPLY.WRITER) AS MEM_NAME
+		FROM BOARD_REPLY
+		WHERE BOARD_NUM = #{boardNum}
+		ORDER BY REPLY_NUM DESC
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateBoardReply">
+		UPDATE BOARD_REPLY
+		SET CONTENT = #{content}
+			, CREATE_DATE = CURRENT_DATE
+		WHERE WRITER = #{writer}
+		AND BOARD_NUM = #{boardNum}
+		AND REPLY_NUM = #{replyNum}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

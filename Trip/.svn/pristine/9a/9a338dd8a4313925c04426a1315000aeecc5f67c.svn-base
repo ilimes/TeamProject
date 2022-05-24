@@ -1,0 +1,43 @@
+package com.project.trip.cart.vo;
+
+public class CartVO {
+	private String cartCode;
+	private String itemCode;
+	private String memId;
+	private String buyDate;
+	private int itemCnt;
+	
+	public String getCartCode() {
+		return cartCode;
+	}
+	public void setCartCode(String cartCode) {
+		this.cartCode = cartCode;
+	}
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public String getMemId() {
+		return memId;
+	}
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
+	public String getBuyDate() {
+		return buyDate;
+	}
+	public void setBuyDate(String buyDate) {
+		this.buyDate = buyDate;
+	}
+	public int getItemCnt() {
+		return itemCnt;
+	}
+	public void setItemCnt(int itemCnt) {
+		this.itemCnt = itemCnt;
+	}
+	
+	
+	
+}

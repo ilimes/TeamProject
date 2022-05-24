@@ -1,0 +1,4 @@
+package com.project.trip.buy.vo;
+
+public class BuyVO {
+}

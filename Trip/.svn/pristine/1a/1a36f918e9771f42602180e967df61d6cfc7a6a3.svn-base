@@ -1,0 +1,35 @@
+package com.project.trip.admin.service;
+
+import java.util.List;
+
+import com.project.trip.admin.vo.AdminMenuVO;
+import com.project.trip.admin.vo.MenuVO;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.item.vo.ImageVO;
+import com.project.trip.item.vo.ItemCateVO;
+import com.project.trip.item.vo.ItemVO;
+
+public interface AdminService {
+	
+	//상품목록(지역) 카테고리
+	List<ItemCateVO> selectItemCategory();
+	
+	//상품 등록
+	void regItem(ItemVO itemVO, ImageVO imageVO);
+	
+	//상단 메뉴리스트 조회
+	List<MenuVO> selectMenuList();
+	
+	//사이드 메뉴리스트 조회
+	List<SideMenuVO> selectSideMenuList();
+	
+	//관리자 메뉴리스트 조회
+	List<AdminMenuVO> selectAdminMenuList();
+	
+	//다음에 올 아이템 코드
+	String selectNextItemCode();
+	
+	//다음에 올 이미지 코드
+	int selectNextImgCode();
+
+}

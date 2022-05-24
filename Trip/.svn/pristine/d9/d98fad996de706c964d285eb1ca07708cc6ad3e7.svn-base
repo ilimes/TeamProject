@@ -1,0 +1,5 @@
+package com.project.trip.item.vo;
+
+public class ImageVO {
+
+}

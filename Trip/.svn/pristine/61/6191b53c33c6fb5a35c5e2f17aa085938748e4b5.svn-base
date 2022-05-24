@@ -1,0 +1,187 @@
+package com.project.trip.board.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.board.service.BoardService;
+import com.project.trip.board.vo.BoardVO;
+import com.project.trip.board.vo.PageVO;
+import com.project.trip.member.vo.MemberVO;
+
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+	
+	@Resource(name="adminService")
+	private AdminService adminService;
+	
+	@Resource(name="boardService")
+	private BoardService boardService;
+	
+	@GetMapping("/boardList")
+	public String boardList(Model model, SideMenuVO sideMenuVO) {
+		
+//		if(sideMenuVO.getSideMenuCode() == null) {
+//			sideMenuVO.setSideMenuCode("SIDE_MENU_001");
+//		}
+
+		//1. 페이징 처리 위해서 게시글 세기
+//		sideMenuVO.setTotalCnt(boardService.selectBoardListCnt(sideMenuVO));
+		
+		// 2. 페이징 처리를 위한 세팅 메소드 호출
+//		sideMenuVO.setPageInfo();    
+		
+		//최상단 메뉴 리스트 보내기
+//		model.addAttribute("menuList", adminService.selectMenuList());
+		
+//		String sideMenuCode = sideMenuVO.getSideMenuCode();
+		
+		/*
+		 * String boardTitle = ""; if(sideMenuCode.equals("SIDE_MENU_001")) { boardTitle
+		 * = "공지사항"; } else if(sideMenuCode.equals("SIDE_MENU_002")) { boardTitle =
+		 * "1:1 문의"; } else if(sideMenuCode.equals("SIDE_MENU_003")) { boardTitle =
+		 * "이용약관"; } else if(sideMenuCode.equals("SIDE_MENU_004")) { boardTitle =
+		 * "찾아오시는 길"; }
+		 */
+		
+		//타이틀 보내기
+//		model.addAttribute("boardTitle", boardTitle);
+		
+		//게시글 목록 보내기
+//		model.addAttribute("boardList", boardService.selectBoardList(sideMenuVO));
+		
+		//상단 공지를 위한 게시글 목록 보내기
+//		model.addAttribute("TopBoardList", boardService.selectAllBoardList(sideMenuVO));
+		
+		//사이드메뉴 리스트 보내기
+//		model.addAttribute("sideMenuList", adminService.selectSideMenuList(sideMenuVO));
+		
+//		if(sideMenuCode.equals("SIDE_MENU_003")) {
+//			return "board/terms_of_use";
+//		}
+//		if(sideMenuCode.equals("SIDE_MENU_004")) {
+//			return "board/company_map";
+//		}
+//		else {
+//		return "board/board_list";
+//		}
+
+		return "board/board_list";
+	}
+	
+	@GetMapping("/notice")
+	public String notice() {
+		return "board/board_list";
+	}
+	@GetMapping("/question")
+	public String question() {
+		return "board/board_list";
+	}
+	@GetMapping("/terms")
+	public String terms() {
+		return "board/terms_of_use";
+	}
+	@GetMapping("/companyMap")
+	public String companyMap() {
+		return "board/company_map";
+	}
+	
+	@GetMapping("/boardWriteForm")
+	public String boardWriteForm(Model model, SideMenuVO sideMenuVO) {
+		//타이틀 보내기
+		model.addAttribute("boardTitle", "글쓰기");
+		
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		
+		//사이드 메뉴 코드 보내기
+		sideMenuVO.setSideMenuCode(sideMenuVO.getSideMenuCode());
+		
+		//메뉴 코드 보내기
+		sideMenuVO.setMenuCode(sideMenuVO.getMenuCode());
+		
+		//사이드메뉴 리스트 보내기
+		model.addAttribute("sideMenuList", adminService.selectSideMenuList(sideMenuVO));
+		
+		return "board/board_write_form";
+	}
+
+	@PostMapping("/boardWrite")
+	public String boardWrite(Model model, SideMenuVO sideMenuVO, BoardVO boardVO, HttpSession session) {
+		//memId 받아오기 - 세션에서
+		String loginId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		//memId 채워주기
+		boardVO.setWriter(loginId);
+		
+		boardService.insertBoard(boardVO);
+		
+		return "redirect:/board/boardList?menuCode=" + sideMenuVO.getMenuCode() +"&sideMenuCode=" + sideMenuVO.getSideMenuCode();
+	}
+	
+	@GetMapping("/boardDetail")
+	public String boardDetail(Model model, SideMenuVO sideMenuVO, BoardVO boardVO) {
+		
+		String sideMenuCode = sideMenuVO.getSideMenuCode();
+		
+		String boardTitle = "";
+		if(sideMenuCode.equals("SIDE_MENU_001")) {
+			boardTitle = "공지사항";
+		}
+		else if(sideMenuCode.equals("SIDE_MENU_002")) {
+			boardTitle = "1:1 문의";
+		}
+		else if(sideMenuCode.equals("SIDE_MENU_003")) {
+			boardTitle = "이용약관";
+		}
+		else if(sideMenuCode.equals("SIDE_MENU_004")) {
+			boardTitle = "찾아오시는 길";
+		}
+		
+		//타이틀 보내기
+		model.addAttribute("boardTitle", boardTitle);
+		
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		
+		//메뉴 코드 보내기
+		sideMenuVO.setSideMenuCode(sideMenuVO.getSideMenuCode());
+		
+		//사이드메뉴 리스트 보내기
+		model.addAttribute("sideMenuList", adminService.selectSideMenuList(sideMenuVO));
+		
+		//조회수 늘리기
+		boardService.updateReadCnt(boardVO);
+		
+		//게시글 정보 보내기
+		model.addAttribute("boardInfo", boardService.selectBoard(boardVO));
+		
+		return "board/board_detail";
+	}
+	
+	@GetMapping("/deleteBoard")
+	public String deleteBoard(Model model, SideMenuVO sideMenuVO, BoardVO boardVO) {
+		boardService.deleteBoard(boardVO);
+		return "redirect:/board/boardList?menuCode=" + sideMenuVO.getMenuCode() + "&sideMenuCode=" + sideMenuVO.getSideMenuCode();
+	}
+	
+	@ResponseBody
+	@PostMapping("/updateBoard")
+	public BoardVO updateBoard(BoardVO boardVO) {
+		boardService.updateBoard(boardVO);
+		return boardVO;
+	}
+	
+}

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="adminMapper">
+
+	<!-- 메뉴 -->
+	<resultMap type="com.project.trip.admin.vo.MenuVO" id="menu">
+		<id column="MENU_CODE" property="menuCode" />
+		<result column="MENU_NAME" property="menuName" />
+		<result column="MENU_URI" property="menuUri" />
+	</resultMap>
+	
+	<!-- 서브메뉴 -->
+	<resultMap type="com.project.trip.admin.vo.SubMenuVO" id="subMenu">
+		<id column="SUB_MENU_CODE" property="subMenuCode" />
+		<result column="MENU_CODE" property="menuCode" />
+		<result column="SUB_MENU_NAME" property="subMenuName" />
+		<result column="SUB_MENU_URI" property="subMenuUri" />
+	</resultMap>
+	
+	<!-- 사이드메뉴 -->
+	<resultMap type="com.project.trip.admin.vo.SideMenuVO" id="sideMenu">
+		<id column="SIDE_MENU_CODE" property="sideMenuCode" />
+		<result column="SIDE_MENU_NAME" property="sideMenuName" />
+		<result column="SIDE_MENU_URI" property="sideMenuUri" />
+		<result column="MENU_CODE" property="menuCode" />
+		<result column="ADMIN_MENU_CODE" property="adminMenuCode"/>
+		<result column="WRITER" property="writer"/>
+	</resultMap>
+
+	<!-- 관리자 메뉴 -->
+	<resultMap type="com.project.trip.admin.vo.AdminMenuVO" id="adminMenu">
+		<id column="ADMIN_MENU_CODE" property="adminMenuCode" />
+		<result column="ADMIN_MENU_NAME" property="adminMenuName" />
+		<result column="ADMIN_MENU_URI" property="adminMenuUri" />
+	</resultMap>
+	
+	<!-- 상품카테고리(지역) -->
+	<resultMap type="com.project.trip.item.vo.ItemCateVO" id="itemCate">
+		<id column="CATE_CODE" property="cateCode" />
+		<result column="CATE_NAME" property="cateName" />
+	</resultMap>
+	
+	<!-- 메인화면 슬라이드 이미지 -->
+	<resultMap type="com.project.trip.admin.vo.SlideImageVO" id="slideImage">
+		<id column="IMG_CODE" property="imgCode"/>
+		<result column="ORIGIN_IMG_NAME" property="originImgName"/>
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<result column="IMAGE_INDEX" property="imageIndex"/>
+	</resultMap>
+	
+	<!-- 관리자메뉴 리스트 조회-->
+	<select id="selectAdminMenuList" resultMap="adminMenu">
+		SELECT ADMIN_MENU_CODE
+			, ADMIN_MENU_NAME
+			, ADMIN_MENU_URI
+		FROM ADMIN_MENU
+		ORDER BY ADMIN_MENU_CODE ASC
+	</select>
+	
+	<!-- 이용자 상단메뉴 리스트 조회 -->
+	<select id="selectMenuList" resultMap="menu">
+		SELECT MENU_CODE
+			, MENU_NAME
+			, MENU_URI
+		FROM TRIP_MENU
+		WHERE MENU_CODE != 'SERVICE'
+		ORDER BY MENU_CODE ASC
+	</select>
+	
+	<!-- 하위메뉴 조회 -->
+	<select id="selectSubMenuList" resultMap="subMenu">
+		SELECT SUB_MENU_CODE
+			, SUB_MENU_NAME
+			, SUB_MENU_URI
+			, MENU_CODE
+		FROM TRIP_SUB_MENU
+		WHERE MENU_CODE = #{menuCode}
+	</select>
+	
+	<!-- 사이드메뉴 리스트 조회 -->
+	<select id="selectSideMenuList" resultMap="sideMenu">
+		SELECT SIDE_MENU_CODE
+			, SIDE_MENU_NAME
+			, SIDE_MENU_URI
+			, MENU_CODE
+			, ADMIN_MENU_CODE
+		FROM TRIP_SIDE_MENU
+		WHERE 1 = 1
+		<if test="menuCode != null and !menuCode.equals('')">
+		AND MENU_CODE = #{menuCode}
+		</if>
+		<if test="adminMenuCode != null and !adminMenuCode.equals('')">
+		AND ADMIN_MENU_CODE = #{adminMenuCode}
+		</if>
+		ORDER BY SIDE_MENU_CODE ASC
+	</select>
+	
+	<!-- 회원 목록 조회 -->
+	<select id="selectMemberList" resultMap="memberMapper.member">
+		SELECT MEM_ID
+			, MEM_NAME
+			, MEM_TELL
+			, MEM_BIRTHDAY
+			, TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE
+		FROM TRIP_MEMBER
+	</select>
+	
+	<!-- 회원 상세정보 조회 -->
+	<select id="selectMemberDetail" resultMap="memberMapper.member">
+		SELECT DISTINCT MEM.MEM_ID
+			, MEM_NAME
+			, MEM_BIRTHDAY
+			, MEM_GENDER
+			, MEM_TELL
+			, TO_CHAR(JOIN_DATE, 'YYYY"년 "MM"월 "DD"일"') AS JOIN_DATE
+			, MEM_ADDR
+			, (SELECT NVL(COUNT(BOOK_NUM),0) FROM BOOK_ITEM WHERE MEM_ID=#{memId}) AS BUY_CNT
+			, (SELECT NVL(SUM(BUY_PRICE),0) FROM BOOK_ITEM WHERE MEM_ID = #{memId}) AS TOTAL_PRICE
+			FROM TRIP_MEMBER MEM
+			WHERE MEM.MEM_ID = #{memId}
+	</select>
+	
+	<!-- 상품카테고리(지역) 조회 -->
+	<select id="selectItemCategory" resultMap="itemCate">
+		SELECT CATE_CODE
+			, CATE_NAME
+		FROM ITEM_CATE
+	</select>
+	
+	<!-- 상품등록 ex. PKG001, 1박2일 -->
+	<insert id="regItem">
+		INSERT INTO TRIP_ITEM (
+			ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, ITEM_DETAIL
+			, START_DATE
+			, END_DATE
+			, TRIP_DATE
+			, CATE_CODE
+		) VALUES (
+			(SELECT 'PKG_'|| LPAD(NVL(MAX(TO_NUMBER(SUBSTR(ITEM_CODE, 6, 3))), 0) + 1, 3, 0) FROM TRIP_ITEM)
+			, #{itemName}
+			, #{itemPrice}
+			, #{itemDetail}
+			, #{startDate}
+			, #{endDate}
+			, TO_CHAR(TO_DATE(#{endDate}) - TO_DATE(#{startDate})) ||'박'|| TO_CHAR(TO_DATE(#{endDate}) - TO_DATE(#{startDate}) + 1) ||'일'
+			, #{cateCode}
+		)
+	</insert>
+	
+	<!-- 상품 이미지 등록 -->
+	<insert id="insertImages">
+		INSERT INTO ITEM_IMAGE(
+			IMG_CODE
+			, ORIGIN_IMG_NAME 
+			, ATTACHED_IMG_NAME 
+			, IS_MAIN 
+			, ITEM_CODE
+		) 
+		<foreach collection="imageList" item="img" separator="UNION ALL">
+		SELECT #{img.imgCode}
+			, #{img.originImgName}
+			, #{img.attachedImgName}
+			, #{img.isMain}
+			, #{img.itemCode}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 다음에 올 아이템 코드 -->
+	<select id="selectNextItemCode" resultType="String">
+		SELECT 'PKG_'|| LPAD(NVL(MAX(TO_NUMBER(SUBSTR(ITEM_CODE, 6, 3))), 0) + 1, 3, 0) FROM TRIP_ITEM
+	</select>
+	
+	<!-- 다음에 올 이미지 코드 -->
+	<select id="selectNextImgCode" resultType="int">
+		SELECT NVL(MAX(IMG_CODE), 0) + 1 
+		FROM ITEM_IMAGE
+	</select>
+	
+	<!-- 등록된 상품 중 선택 상품 삭제(관리자) -->
+	<delete id="deleteSelectedItem">
+		DELETE TRIP_ITEM
+		WHERE ITEM_CODE IN 
+		<foreach item="itemCode" collection="itemCodeArr" open="(" close=")" separator=", ">#{itemCode}</foreach>
+	</delete>
+	
+	
+	<!-- 메인 슬라이드 이미지 등록 -->
+	<insert id="regSlideImage">
+		INSERT INTO SLIDE_IMAGE (
+			IMG_CODE
+			, ORIGIN_IMG_NAME
+			, ATTACHED_IMG_NAME
+			, IMAGE_INDEX
+		) VALUES(
+			(SELECT 'IMG_'|| LPAD(NVL(MAX(TO_NUMBER(SUBSTR(IMG_CODE, 6, 3))), 0) + 1, 3, 0)
+			FROM SLIDE_IMAGE)
+			, #{originImgName}
+			, #{attachedImgName}
+			, (SELECT NVL(MAX(IMAGE_INDEX), 0) + 1 FROM SLIDE_IMAGE)
+		)
+	</insert>
+	
+	<!-- 슬라이드 이미지 인덱스 -->
+	<select id="selectImageIndex" resultType="int">
+		SELECT NVL(MAX(IMAGE_INDEX), 0) + 1 
+		FROM SLIDE_IMAGE
+	</select>
+	
+	<!-- 메인 슬라이드 이미지 목록 -->
+	<select id="selectSlideList" resultMap="slideImage">
+		SELECT IMG_CODE
+			, ATTACHED_IMG_NAME
+			, IMAGE_INDEX
+		FROM SLIDE_IMAGE
+	</select>
+	
+	<!-- 메인 슬라이드 이미지 수정 -->
+	<update id="updateSlideImage">
+		UPDATE SLIDE_IMAGE
+		SET 
+		ORIGIN_IMG_NAME = #{originImgName}
+		WHERE IMG_CODE = #{imgCode}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

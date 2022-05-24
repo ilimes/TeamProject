@@ -1,0 +1,11 @@
+function loginTempSubmit(){
+	if(tempEmail.value == "" || tempEmail.value == null){
+		alert('이메일을 입력해주세요!');
+		return;
+	}
+	if(bookNum.value == "" || bookNum.value == null){
+		alert('예약번호를 입력해주세요!');
+		return;
+	}
+	loginTempForm.submit();	
+}

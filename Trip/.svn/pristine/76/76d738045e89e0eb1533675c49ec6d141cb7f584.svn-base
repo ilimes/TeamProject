@@ -1,0 +1,64 @@
+package com.project.trip.buy.vo;
+
+import java.util.List;
+
+public class BuyVO {
+	private String bookNum;
+	private String memId;
+	private String itemCode;
+	private int buyPrice;
+	private int travelers;
+	private String bookDate;
+	private List<BuyVO> buyList;
+	
+	
+	public List<BuyVO> getBuyList() {
+		return buyList;
+	}
+	public void setBuyList(List<BuyVO> buyList) {
+		this.buyList = buyList;
+	}
+	public String getBookNum() {
+		return bookNum;
+	}
+	public void setBookNum(String bookNum) {
+		this.bookNum = bookNum;
+	}
+	public String getMemId() {
+		return memId;
+	}
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public int getBuyPrice() {
+		return buyPrice;
+	}
+	public void setBuyPrice(int buyPrice) {
+		this.buyPrice = buyPrice;
+	}
+	public int getTravelers() {
+		return travelers;
+	}
+	public void setTravelers(int travelers) {
+		this.travelers = travelers;
+	}
+	public String getBookDate() {
+		return bookDate;
+	}
+	public void setBookDate(String bookDate) {
+		this.bookDate = bookDate;
+	}
+	
+	
+	
+	
+}
+
+
+

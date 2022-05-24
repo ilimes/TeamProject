@@ -1,0 +1,45 @@
+package com.project.trip.cart.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.trip.cart.service.CartService;
+import com.project.trip.cart.vo.CartVO;
+import com.project.trip.member.vo.MemberVO;
+
+@Controller
+@RequestMapping("/cart")
+public class CartController {
+
+	@Resource(name="cartService")
+	private CartService cartService;
+	
+	@GetMapping("/cartList")
+	public String cartList(HttpSession session) {
+		//memId 받아오기 - 세션에서
+		String memId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		
+		return "cart/cart_list";
+	}
+	
+	@ResponseBody
+	@PostMapping("/insertCart")
+	public String insertCart(HttpSession session, CartVO cartVO) {
+		//memId 받아오기 - 세션에서
+		String loginId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		//memId 채워주기
+		cartVO.setMemId(loginId);
+		
+		//장바구니에 넣는 코드 실행
+		String result = Integer.toString(cartService.insertCart(cartVO));
+		
+		return result;
+	}
+	
+}

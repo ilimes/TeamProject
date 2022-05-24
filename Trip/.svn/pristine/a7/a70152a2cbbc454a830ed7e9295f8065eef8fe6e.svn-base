@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="memberMapper">
+	<resultMap type="com.project.trip.member.vo.MemberVO" id="member">
+		<id column="MEM_ID" 				property="memId"/>
+		<result column="MEM_PW" 			property="memPw"/>
+		<result column="MEM_NAME" 			property="memName"/>
+		<result column="MEM_TELL" 			property="memTell"/>
+		<result column="MEM_BIRTHDAY" 		property="memBirthday"/>
+		<result column="MEM_GENDER" 		property="memGender"/>
+		<result column="MEM_ZIPCODE" 		property="memZipcode"/>
+		<result column="MEM_ADDR" 			property="memAddr"/>
+		<result column="MEM_RANK" 			property="memRank"/>
+		<result column="MEM_ADDR_DETAIL" 	property="memAddrDetail"/>
+		<result column="IS_ADMIN" 			property="isAdmin"/>
+		<result column="JOIN_DATE" 			property="joinDate"/>
+		<result column="BUY_CNT" 			property="buyCnt"/>
+		<result column="MEM_POINT" 			property="memPoint"/>
+		<result column="TOTAL_PRICE" 		property="totalPrice"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.member.vo.TempMemberVO" id="tempMember">
+		<id column="TEMP_NUM" 			property="tempNum"/>
+		<result column="TEMP_NAME" 		property="tempName"/>
+		<result column="TEMP_TELL" 		property="tempTell"/>
+		<result column="TEMP_BIRTHDAY" 	property="tempBirthday"/>
+		<result column="TEMP_EMAIL" 	property="tempEmail"/>
+		<result column="TEMP_ADDR" property="tempAddr"/>
+		<result column="TEMP_ADDR_DETAIL" property="tempAddrDetail"/>
+		<result column="TEMP_ZIPCODE" property="tempZipcode"/>
+		<result column="TEMP_GENDER" property="tempGender"/>
+		<result column="BOOK_NUM" property="bookNum"/>
+	</resultMap>
+
+	<insert id="join">
+		INSERT INTO TRIP_MEMBER(
+			MEM_ID
+			, MEM_PW
+			, MEM_NAME
+			, MEM_TELL
+			, MEM_BIRTHDAY
+			, MEM_GENDER
+			, MEM_ZIPCODE
+			, MEM_ADDR
+			, MEM_ADDR_DETAIL
+		) VALUES(
+			#{memId}
+			, #{memPw}
+			, #{memName}
+			, #{memTell}
+			, #{memBirthday}
+			, #{memGender}
+			, #{memZipcode}
+			, #{memAddr}
+			, #{memAddrDetail}
+		)
+	</insert>
+	
+	<select id="login" resultMap="member">
+		SELECT MEM_ID
+			, MEM_PW
+			, MEM_NAME
+			, MEM_TELL
+			, MEM_BIRTHDAY
+			, MEM_GENDER
+			, MEM_ZIPCODE
+			, MEM_ADDR
+			, MEM_ADDR_DETAIL
+			, IS_ADMIN
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+		AND MEM_PW = #{memPw}
+	</select>
+	
+	<select id="selectId" resultType="String">
+		SELECT MEM_ID
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<select id="selectTell" resultMap="member">
+		SELECT MEM_TELL
+		FROM TRIP_MEMBER
+		WHERE MEM_TELL = #{memTell}
+	</select>
+	
+	<select id="selectName" resultType="String">
+		SELECT MEM_NAME
+		FROM TRIP_MEMBER
+		WHERE MEM_NAME = #{memName}
+		AND IS_DEACTIVATE = 'N'
+	</select>
+	
+	<select id="findId" resultMap="member">
+		SELECT MEM_ID
+			, MEM_NAME
+		FROM TRIP_MEMBER
+		WHERE MEM_TELL = #{memTell}
+		AND MEM_NAME = #{memName}
+		AND MEM_GENDER = #{memGender}
+		AND MEM_BIRTHDAY = #{memBirthday}
+	</select>
+	
+	<select id="findDeactivateMember" resultMap="member">
+		SELECT MEM_ID
+		FROM TRIP_MEMBER
+		WHERE IS_DEACTIVATE = 'Y'
+		AND MEM_ID = #{memId}
+	</select>
+	
+	<select id="tempLogin" resultMap="tempMember">
+		SELECT TEMP_NUM
+			, TEMP_NAME
+		FROM TEMP_MEMBER
+		WHERE TEMP_NUM = #{tempNum}
+		AND TEMP_NAME = #{tempName}
+	</select>
+	
+	<select id="findPw" resultMap="member">
+		SELECT MEM_PW
+			, MEM_NAME
+			, MEM_ID
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+		AND IS_DEACTIVATE = 'N'
+	</select>
+	
+	<update id="changePw">
+		UPDATE TRIP_MEMBER
+		SET MEM_PW = #{memPw}
+		WHERE MEM_ID = #{memId}
+		AND IS_DEACTIVATE = 'N'
+	</update>
+	
+	<update id="changeMemberInfo">
+		UPDATE TRIP_MEMBER
+		SET MEM_PW = #{memPw}
+			, MEM_NAME = #{memName}
+			, MEM_GENDER = #{memGender}
+			, MEM_BIRTHDAY = #{memBirthday}
+			, MEM_ZIPCODE = #{memZipcode}
+			, MEM_ADDR = #{memAddr}
+			, MEM_ADDR_DETAIL = #{memAddrDetail}
+			, MEM_TELL = #{memTell}
+		WHERE MEM_ID = #{memId}
+		AND IS_DEACTIVATE = 'N'
+	</update>
+	
+	<update id="deactivateMember">
+		UPDATE TRIP_MEMBER
+		SET IS_DEACTIVATE = 'Y'
+		WHERE MEM_ID = #{memId}
+	</update>
+	
+	<select id="selectMemberInfo" resultMap="member">
+		SELECT MEM_ID
+			    , MEM_NAME
+		    , MEM_TELL
+		    , MEM_POINT
+		    , TO_CHAR(TO_DATE(MEM_BIRTHDAY), 'YYYY-MM-DD') AS MEM_BIRTHDAY
+			, MEM_GENDER
+			, MEM_ADDR
+			, MEM_ADDR_DETAIL
+			, MEM_ZIPCODE
+			, MEM_RANK
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<select id="selectBookList" resultMap="buyMapper.bookView">
+		SELECT BOOK_NUM
+		    , ITEM_NAME
+		    , BUY_PRICE
+		    , TRAVELERS
+		    , BOOK_DATE
+		    , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+		    , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+		FROM BOOK_VIEW
+		WHERE MEM_ID = #{memId}
+		ORDER BY BOOK_DATE DESC
+	</select>
+	
+	<insert id="bookTempItem">
+		INSERT INTO TEMP_MEMBER (
+			TEMP_NUM
+			, TEMP_NAME
+			, TEMP_TELL
+			, TEMP_BIRTHDAY
+			, TEMP_EMAIL
+			, TEMP_ADDR
+			, TEMP_ADDR_DETAIL
+			, TEMP_ZIPCODE
+			, TEMP_GENDER
+			, BOOK_NUM
+		) VALUES (
+			(SELECT NVL(MAX(TEMP_NUM), 0) + 1 FROM TEMP_MEMBER)	
+			, #{tempName}
+			, #{tempTell}
+			, #{tempBirthday}
+			, #{tempEmail}
+			, #{tempAddr}
+			, #{tempAddrDetail}
+			, #{tempZipcode}
+			, #{tempGender}
+			, #{bookNum}
+		)
+	</insert>
+	
+	<select id="selectTempMember" resultMap="tempMember">
+		SELECT TEMP_NAME
+			, TEMP_TELL
+			, TEMP_BIRTHDAY
+			, TEMP_EMAIL
+			, TEMP_ADDR
+			, TEMP_ADDR_DETAIL
+			, TEMP_GENDER
+			, TEMP_ZIPCODE
+			, BOOK_NUM
+		FROM TEMP_MEMBER
+		WHERE TEMP_EMAIL = #{tempEmail}
+		AND BOOK_NUM = #{bookNum}
+	</select>
+	
+	<select id="findTempMember" resultType="int">
+		SELECT COUNT(TEMP_NUM)
+		FROM TEMP_MEMBER
+		WHERE TEMP_EMAIL = #{tempEmail}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

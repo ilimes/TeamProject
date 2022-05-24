@@ -1,0 +1,52 @@
+package com.project.trip.item.vo;
+
+import com.project.trip.admin.vo.BookSearchVO;
+
+public class ItemVO extends BookSearchVO{
+	private String ItemCode;
+	private String itemName;
+	private int itemPrice;
+	private String itemDetail;
+	private String tripDate;
+	private String CateCode;
+	
+	
+	public String getItemCode() {
+		return ItemCode;
+	}
+	public void setItemCode(String itemCode) {
+		ItemCode = itemCode;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public int getItemPrice() {
+		return itemPrice;
+	}
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+	public String getItemDetail() {
+		return itemDetail;
+	}
+	public void setItemDetail(String itemDetail) {
+		this.itemDetail = itemDetail;
+	}
+	public String getTripDate() {
+		return tripDate;
+	}
+	public void setTripDate(String tripDate) {
+		this.tripDate = tripDate;
+	}
+	public String getCateCode() {
+		return CateCode;
+	}
+	public void setCateCode(String cateCode) {
+		CateCode = cateCode;
+	}
+	
+
+}

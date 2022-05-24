@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+글 상세페이지 입니다.<br>
+글 번호 : ${boardInfo.boardNum }<br>
+제목 : ${boardInfo.title }<br>
+내용 : ${boardInfo.content }
+</body>
+</html>

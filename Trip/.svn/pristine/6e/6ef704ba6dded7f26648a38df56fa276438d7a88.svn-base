@@ -1,0 +1,31 @@
+package com.project.trip.member.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.project.trip.admin.service.AdminService;
+
+@Controller
+@RequestMapping("/member")
+public class MemberController {
+	
+	@Resource(name = "adminService")
+	private AdminService adminService;
+	
+	@GetMapping("/loginForm")
+	public String loginForm(Model model) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		return "member/login";
+	}
+	
+	@GetMapping("/joinForm")
+	public String joinForm() {
+		return "member/join";
+	}
+	
+}

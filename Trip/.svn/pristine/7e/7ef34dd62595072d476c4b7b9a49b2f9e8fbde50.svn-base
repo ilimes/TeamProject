@@ -1,0 +1,42 @@
+package com.project.trip.item.vo;
+
+public class ReviewReplyVO {
+	private int replyNum;
+	private String content;
+	private String createDate;
+	private int reviewNum;
+	private String writer;
+	
+	public int getReplyNum() {
+		return replyNum;
+	}
+	public void setReplyNum(int replyNum) {
+		this.replyNum = replyNum;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public int getReviewNum() {
+		return reviewNum;
+	}
+	public void setReviewNum(int reviewNum) {
+		this.reviewNum = reviewNum;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	
+	
+}

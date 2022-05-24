@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="cartMapper">
+	<resultMap type="com.project.trip.cart.vo.CartVO" id="cart">
+		<id column="CART_CODE" 			property="cartCode"/>
+		<result column="ITEM_CODE" 		property="itemCode"/>
+		<result column="MEM_ID" 		property="memId"/>
+		<result column="TRAVELERS" 		property="travelers"/>
+		<result column="BUY_DATE" 		property="buyDate"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.cart.vo.CartViewVO" id="cartView">
+		<id column="CART_CODE" 				property="cartCode"/>
+		<result column="ITEM_CODE" 			property="itemCode"/>
+		<result column="ITEM_NAME" 			property="itemName"/>
+		<result column="ITEM_PRICE" 			property="itemPrice"/>
+		<result column="TOTAL_PRICE" 			property="totalPrice"/>
+		<result column="TRAVELERS" 				property="travelers"/>
+		<result column="BUY_DATE" 				property="buyDate"/>
+		<result column="MEM_ID" 				property="memId"/>
+		<result column="ATTACHED_IMG_NAME" 		property="attachedImgName"/>
+	</resultMap>
+	
+	<insert id="insertCart">
+		MERGE INTO TRIP_CART
+		USING DUAL
+		ON (ITEM_CODE = #{itemCode} AND MEM_ID = #{memId})
+		WHEN MATCHED THEN
+			UPDATE
+			SET
+			TRAVELERS = TRAVELERS + #{travelers}
+			WHERE MEM_ID = #{memId}
+		WHEN NOT MATCHED THEN
+			INSERT (
+				CART_CODE
+				, ITEM_CODE
+				, MEM_ID
+				, TRAVELERS
+			) VALUES (
+				(SELECT NVL(MAX(CART_CODE), 0) + 1 FROM TRIP_CART)
+				, #{itemCode}
+				, #{memId}
+				, #{travelers}
+			)
+	</insert>
+	
+	<select id="selectCartList" resultMap="cartView">
+		SELECT CART_CODE
+			, ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, TOTAL_PRICE
+			, TRAVELERS
+			, BUY_DATE
+			, MEM_ID
+			, ATTACHED_IMG_NAME
+		FROM CART_VIEW
+		WHERE MEM_ID = #{memId}
+		ORDER BY CART_CODE DESC
+	</select>
+	
+	<delete id="deleteCart">
+		DELETE TRIP_CART
+		WHERE CART_CODE = #{cartCode}
+	</delete>
+	
+	<delete id="deleteCarts">
+		DELETE TRIP_CART
+		WHERE MEM_ID = #{memId}
+		AND ITEM_CODE IN
+		<foreach collection="itemCodeArr" item="itemCode" open="(" close=")" separator=",">
+			#{itemCode}
+		</foreach>
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+package com.project.trip.cart.service;
+
+public interface CartService {
+
+}

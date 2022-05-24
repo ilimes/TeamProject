@@ -1,0 +1,15 @@
+package com.project.trip.board.service;
+
+import java.util.List;
+
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.board.vo.BoardVO;
+
+public interface BoardService {
+	//게시글 목록 불러오기
+	List<BoardVO> selectBoardList(SideMenuVO sideMenuVO);
+	
+	BoardVO selectBoard(BoardVO boardVO);
+	
+	int selectBoardListCnt(SideMenuVO sideMenuVO);
+}

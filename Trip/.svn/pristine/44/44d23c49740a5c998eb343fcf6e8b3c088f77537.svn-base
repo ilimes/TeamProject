@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+h4{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.btnDiv{
+	display: flex;
+	justify-content: center;
+	padding: 30px 0 0 0;
+}
+.btns{
+	width: 200px;
+}
+</style>
+</head>
+<body>
+<div class="titleDiv">
+	<h3>예약/결제</h3>
+</div>
+<div style="text-align: center; margin-top: 30px;"><h4>성공적으로 패키지 구매가 완료되었습니다. 이용해주셔서 감사합니다 :)</h4></div>
+<div style="text-align: center;">구매 패키지 코드 : ${buyVO.itemCode }</div>
+<div class="btnDiv">
+	<div class="btns" onclick="location.href='/member/myInfo';">마이 페이지로 이동</div>
+</div>
+</body>
+</html>

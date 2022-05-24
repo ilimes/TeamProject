@@ -1,0 +1,21 @@
+function reviewWrite(){
+	
+	var title = document.getElementById('title').value;
+	
+	if(title == ''){
+		alert('제목은 필수입력입니다.');
+		return;
+	}
+	
+	var content = document.getElementById('content').value;
+	
+	if(content == ''){
+		alert('내용은 필수입력입니다.');
+		return;
+	}
+	
+	var reviewWriteForm = document.getElementById('reviewWriteForm');
+	alert('등록 완료');
+	reviewWriteForm.submit();
+	
+}

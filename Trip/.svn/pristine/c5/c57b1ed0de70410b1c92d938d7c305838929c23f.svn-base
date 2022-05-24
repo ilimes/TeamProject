@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.updateDiv{
+	border: 1px solid black;
+	padding: 1.3rem;
+}
+
+</style>
+</head>
+<body>
+<div class="titleDiv">
+		<h3>슬라이드 이미지</h3>
+</div>
+<div class="updateDiv">
+	<div class="col-12">
+		<c:forEach items="${imageList }" var="image" varStatus="vS">
+			<div style="margin-bottom: 20px;">
+				<div style="text-align: center;"><h4>▼ ${vS.index + 1 }번 이미지</h4></div>
+				<form action="/admin/updateImage" method="post" enctype="multipart/form-data" id="updateImgForm${vS.index + 1}" class="needs-validation updateImgForm"  novalidate>
+					<!-- <div class="row mb-3"> -->
+						<!-- <div class="col-9"> -->
+						<div class="col-12" style="text-align:center;">
+							<input type="image" src="/resources/images/slide/${image.attachedImgName }" alt="엑박" width="75%" disabled>
+							<input type="hidden" value="${image.imgCode }" name="imgCode">
+						</div>
+						<div class="row">
+						<!-- <div class="col-5"> -->
+						<div class="col-12" style="text-align:center;">
+							<input type="file" class="form-control"  name="updateImg" style="display:inline-block; width: 54.7%;">
+							<button class="btn btn-primary mb-2" type="submit" style="display:inline-block; width: 20%; margin-top: 7px;">이미지 변경</button>
+						</div>
+						<!-- <div class="col-4"> -->
+						</div>
+					<!-- </div> -->
+				</form>
+			</div>
+		</c:forEach>
+	</div>
+	<div></div>
+</div>
+<!-- jquery validation 사용 문법 로딩 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/resources/js/admin/update_image.js?ver=4"></script>
+</body>
+</html>

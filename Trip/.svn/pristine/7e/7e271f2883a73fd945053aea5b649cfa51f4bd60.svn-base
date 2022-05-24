@@ -1,0 +1,206 @@
+package com.project.trip.item.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.jdbc.SQL;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.admin.vo.MenuVO;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.board.service.BoardService;
+import com.project.trip.board.vo.BoardReplyVO;
+import com.project.trip.board.vo.BoardVO;
+import com.project.trip.board.vo.PageVO;
+import com.project.trip.item.service.ItemService;
+import com.project.trip.item.vo.ItemVO;
+import com.project.trip.item.vo.ReviewLikeVO;
+import com.project.trip.item.vo.ReviewReplyVO;
+import com.project.trip.item.vo.ReviewVO;
+import com.project.trip.member.vo.MemberVO;
+
+import oracle.jdbc.proxy.annotation.Post;
+
+@Controller
+@RequestMapping("/item")
+public class ItemController {
+	
+	@Resource(name="adminService")
+	private AdminService adminService;
+	
+	@Resource(name="itemService")
+	private ItemService itemService;
+	
+	@Resource(name="boardService")
+	private BoardService boardService;
+	
+	@GetMapping("/mainPage")
+	public String mainPage(Model model, ReviewVO reviewVO) {
+		reviewVO.setRowNum(5);
+		model.addAttribute("reviewList", itemService.selectBestReview(reviewVO));
+		
+		return "template/main";
+	}
+	
+	@GetMapping("/itemList")
+	public String itemList(Model model, ItemVO itemVO) {
+		
+		//아이템 리스트 보내기
+		model.addAttribute("itemList", itemService.selectItemList(itemVO));
+		
+		return "item/item_list";
+	}
+	
+	@GetMapping("/itemDetail")
+	public String itemDetail(Model model, ItemVO itemVO, PageVO pageVO, ReviewVO reviewVO) {
+		
+		//아이템 상세정보 보내기
+		model.addAttribute("itemInfo", itemService.selectItemDetail(itemVO));
+		
+		//1. 페이징 처리 위해서 게시글 세기
+		int totalCnt = itemService.selectReviewListCnt(reviewVO);
+		reviewVO.setTotalCnt(totalCnt);
+		
+		// -- 모든 게시글을 가져오기 위해서 displayCnt를 totalCnt로 설정.
+		reviewVO.setDisplayCnt(totalCnt);
+		
+		// 2. 페이징 처리를 위한 세팅 메소드 호출
+		reviewVO.setPageInfo();   
+		
+		//리뷰 리스트 보내기
+		model.addAttribute("reviewList", itemService.selectReviewList(reviewVO));
+		
+		return "item/item_detail";
+	}
+	
+	@GetMapping("/tripReview")
+	public String tripReview() {
+		return "redirect:/item/review?menuCode=MENU_002";
+	}
+	
+	@GetMapping("/bestReview")
+	public String bestReview(Model model, PageVO pageVO, ReviewVO reviewVO) {
+		reviewVO.setRowNum(10);
+		model.addAttribute("reviewList", itemService.selectBestReview(reviewVO));
+		return "item/best_review";
+	}
+	
+	@GetMapping("/review")
+	public String review(Model model, PageVO pageVO, ReviewVO reviewVO) {
+		//1. 페이징 처리 위해서 게시글 세기
+		reviewVO.setTotalCnt(itemService.selectReviewListCnt(reviewVO));
+		
+		// 2. 페이징 처리를 위한 세팅 메소드 호출
+		reviewVO.setPageInfo();    
+		
+		model.addAttribute("reviewList", itemService.selectReviewList(reviewVO));
+		return "item/review";
+	}
+	
+	@GetMapping("/tripInfo")
+	public String tripInfo() {
+		return "item/weather";
+	}
+	
+	@GetMapping("/weather")
+	public String weather() {
+		return "item/weather";
+	}
+	
+	@GetMapping("/needs")
+	public String needs() {
+		return "item/needs";
+	}
+	
+	@GetMapping("/reviewWriteForm")
+	public String reviewWriteForm(Model model, ItemVO itemVO) {
+		//아이템 리스트 보내기
+		model.addAttribute("itemList", itemService.selectItemList(itemVO));
+		return "item/review_write_form";
+	}
+	
+	@PostMapping("/insertReview")
+	public String insertReview(HttpSession session, ReviewVO reviewVO) {
+		//memId 받아오기 - 세션에서
+		String loginId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		//memId 채워주기
+		reviewVO.setWriter(loginId);
+		
+		itemService.insertReview(reviewVO);
+		
+		return "redirect:/item/review";
+	}
+	
+	@GetMapping("/reviewDetail")
+	public String reviewDetail(Model model, HttpSession session, MenuVO menuVO, ReviewVO reviewVO, ReviewLikeVO reviewLikeVO, ReviewReplyVO reviewReplyVO) {
+		//조회수 증가시키기
+		itemService.updateReadCnt(reviewVO);
+		
+		//memId 받아오기 - 세션에서
+		String memId = "";
+		if(session.getAttribute("loginInfo") == null) {
+			memId = "emptyID";
+		}
+		else {
+			memId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		}
+		
+		reviewLikeVO.setReviewNum(reviewVO.getReviewNum());
+		reviewLikeVO.setMemId(memId);
+		
+		model.addAttribute("myReviewLikeCnt", itemService.selectMyReviewLikeCnt(reviewLikeVO));
+
+		//리뷰 정보 보내기
+		model.addAttribute("reviewInfo", itemService.selectReviewDetail(reviewVO));
+		
+		//댓글 리스트 보내기
+		model.addAttribute("reviewReplyList", itemService.selectReplyList(reviewReplyVO));
+		
+		return "item/review_detail";
+	}
+	
+	@GetMapping("/deleteReview")
+	public String deleteBoard(Model model, MenuVO menuVO, ReviewVO reviewVO) {
+		itemService.deleteReview(reviewVO);
+		return "redirect:/item/review?menuCode=" + menuVO.getMenuCode();
+	}
+	
+	@ResponseBody
+	@PostMapping("/updateReview")
+	public ReviewVO updateBoard(ReviewVO reviewVO) {
+		itemService.updateReview(reviewVO);
+		return reviewVO;
+	}
+	
+	@PostMapping("/insertMyReviewLike")
+	public String insertMyReviewLike(ReviewLikeVO reviewLikeVO) {
+		itemService.insertMyReviewLike(reviewLikeVO);
+		return "redirect:/item/reviewDetail?menuCode=MENU_002&reviewNum=" + reviewLikeVO.getReviewNum();
+	}
+	
+	@PostMapping("/deleteMyReviewLike")
+	public String deleteMyReviewLike(ReviewLikeVO reviewLikeVO) {
+		itemService.deleteMyReviewLike(reviewLikeVO);
+		return "redirect:/item/reviewDetail?menuCode=MENU_002&reviewNum=" + reviewLikeVO.getReviewNum();
+	}
+	
+	@PostMapping("/insertReviewReply")
+	public String insertReviewReply(ReviewReplyVO reviewReplyVO, HttpSession session) {
+		//memId 받아오기 - 세션에서
+		String loginId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		//memId 채워주기
+		reviewReplyVO.setWriter(loginId);
+		
+		itemService.insertReviewReply(reviewReplyVO);
+		return "redirect:/item/reviewDetail?menuCode=MENU_002&reviewNum=" + reviewReplyVO.getReviewNum();
+	}
+	
+	
+}

@@ -1,0 +1,28 @@
+package com.project.trip.admin.vo;
+
+public class AdminMenuVO {
+	private String adminMenuCode;
+	private String adminMenuName;
+	private String adminMenuUri;
+	
+	public String getAdminMenuCode() {
+		return adminMenuCode;
+	}
+	public void setAdminMenuCode(String adminMenuCode) {
+		this.adminMenuCode = adminMenuCode;
+	}
+	public String getAdminMenuName() {
+		return adminMenuName;
+	}
+	public void setAdminMenuName(String adminMenuName) {
+		this.adminMenuName = adminMenuName;
+	}
+	public String getAdminMenuUri() {
+		return adminMenuUri;
+	}
+	public void setAdminMenuUri(String adminMenuUri) {
+		this.adminMenuUri = adminMenuUri;
+	}
+	
+	
+}

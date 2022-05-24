@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.updateDiv{
+	border: 1px solid black;
+	padding: 1.3rem;
+}
+li{
+	list-style: none;
+}
+</style>
+</head>
+<body>
+<div class="titleDiv">
+		<h3>화면 이미지</h3>
+</div>
+<div class="updateDiv">
+	<div class="col-12">
+		<c:forEach items="${imageList }" var="image">
+			<div class="row mb-3">
+				<div class="col-6">
+					<input type="image" src="/resources/images/slide/${image.attachedImgName }" alt="엑박" width="90%;" disabled>
+				</div>
+				<div class="col-6" style="vertical-align: bottom;">
+					<input class="form-control mb-2" type="file" name="slideImage" id="slideImage" >
+					<button class="btn btn-primary mb-2" onclick="#">이미지 변경</button>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
+	<div></div>
+</div>
+</body>
+</html>

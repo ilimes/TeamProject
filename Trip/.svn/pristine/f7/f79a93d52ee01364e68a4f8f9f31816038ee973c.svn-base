@@ -1,0 +1,46 @@
+package com.project.trip.buy.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.project.trip.buy.vo.BuyVO;
+import com.project.trip.cart.vo.CartVO;
+import com.project.trip.member.vo.TempMemberVO;
+
+@Service("buyService")
+public class BuyServiceImpl implements BuyService{
+
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+
+	//상품 구매시 구매정보 등록
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void bookItem(BuyVO buyVO, TempMemberVO tempMemberVO) {
+		sqlSession.insert("memberMapper.bookTempItem", tempMemberVO);
+		sqlSession.insert("buyMapper.bookItem", buyVO);
+		if(buyVO.getTemp().equals("") || buyVO.getTemp() == null) {
+			sqlSession.insert("buyMapper.plusMemPoint", buyVO);
+			sqlSession.update("buyMapper.updateMemPoint", buyVO);
+			sqlSession.update("buyMapper.updateMemRank", buyVO);
+		}
+		
+		
+	}
+	
+	//선택 상품 구매
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void selectedBuyCartList(BuyVO buyVO, CartVO cartVO) {
+		sqlSession.insert("buyMapper.selectedBuyCartList", buyVO);
+		sqlSession.delete("cartMapper.deleteCarts", cartVO);
+		sqlSession.insert("buyMapper.plusPointList", buyVO);
+		sqlSession.update("buyMapper.updateMemPoint", buyVO);
+		sqlSession.update("buyMapper.updateMemRank", buyVO);
+	}
+
+}

@@ -1,0 +1,14 @@
+.overlaybox{
+	border: none;
+	width: 100%;
+}
+.boxtitle{
+	font-weight: bold;
+	font-size: 18px;
+	background: #eee;
+	padding: 5px 0 0 10px;
+	border-bottom: 1px solid #ddd;
+}
+.desc {position: relative;margin: 0 0 0 90px;height: 75px;}
+.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}

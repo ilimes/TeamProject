@@ -1,0 +1,5 @@
+function search(){
+	var searchText = document.getElementById('searchText').value;
+	
+	location.href='/item/itemList?itemName=' + searchText;
+}

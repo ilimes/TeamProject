@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="buyMapper">
+	<resultMap type="com.project.trip.buy.vo.BuyVO" id="buy">
+		<id column="BOOK_NUM" property="bookNum"/>
+		<result column="MEM_ID" property="memId"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+		<result column="BUY_PRICE" property="buyPrice"/>
+		<result column="TRAVELERS" property="travelers"/>
+		<result column="BOOK_DATE" property="bookDate"/>
+		<result column="TEMP_EMAIL" property="tempEmail"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.buy.vo.BookViewVO" id="bookView">
+		<id column="BOOK_NUM" property="bookNum"/>
+		<result column="ITEM_NAME" property="itemName"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+		<result column="MEM_ID" property="memId"/>
+		<result column="TEMP_EMAIL" property="tempEmail"/>
+		<result column="MEM_NAME" property="memName"/>
+		<result column="MEM_TELL" property="memTell"/>
+		<result column="TRAVELERS" property="travelers"/>
+		<result column="BUY_PRICE" property="buyPrice"/>
+		<result column="BOOK_DATE" property="bookDate"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="TRIP_DATE" property="tripDate"/>
+		<result column="ROW_NUM" property="rowNum"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.buy.vo.BookItemVO" id="bookItem">
+		<id column="BOOK_NUM" property="bookNum"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+		<result column="ITEM_NAME" property="itemName"/>
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<result column="ORIGIN_PRICE" property="originPrice"/>
+		<result column="TRIP_DATE" property="tripDate"/>
+		<result column="BUY_PRICE" property="buyPrice"/>
+		<result column="TRAVELERS" property="travelers"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="BOOK_DATE" property="bookDate"/>
+		<result column="TEMP_EMAIL" property="tempEmail"/>
+	</resultMap>
+	
+	<!-- 상품 개별구매 -->
+	<insert id="bookItem">
+	INSERT INTO BOOK_ITEM (
+		    BOOK_NUM
+		    <if test='temp.equals("0")'>
+		    , MEM_ID
+		    </if>
+		    <if test='temp.equals("1")'>
+		    , TEMP_EMAIL
+		    </if>
+		    , ITEM_CODE
+		    , TRAVELERS
+		    , BUY_PRICE
+		    ) VALUES (
+		      #{bookNum}
+		    , #{memId}
+		    , #{itemCode}
+		    , #{travelers}
+		    <if test='temp.equals("0")'>
+		    , (SELECT 
+			     CASE 
+			        WHEN (SELECT MEM_RANK 
+			                FROM TRIP_MEMBER
+			                WHERE MEM_ID = #{memId}) = 'VIP' 
+			        THEN #{buyPrice} * 0.9
+			        WHEN (SELECT MEM_RANK 
+			                FROM TRIP_MEMBER
+			                WHERE MEM_ID = #{memId}) = '우수' 
+			        THEN #{buyPrice} * 0.95
+			        ELSE #{buyPrice} END AS BUY_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE = #{itemCode})
+		    </if>
+		    <if test='temp.equals("1")'>
+		    , #{buyPrice}
+		    </if>
+			)
+	</insert>
+	
+	<!-- 선택한 상품 구매 -->
+	<insert id="selectedBuyCartList">
+		INSERT INTO BOOK_ITEM(
+			BOOK_NUM
+			, MEM_ID
+			, ITEM_CODE
+			, BUY_PRICE
+			, TRAVELERS
+		)
+		<foreach collection="buyList" item="buyInfo" open="(" close=")" separator="UNION ALL" index="i">
+		SELECT
+         	#{buyInfo.bookNum}
+			, #{buyInfo.memId}
+			, #{buyInfo.itemCode}
+			, (SELECT 
+			     CASE 
+			        WHEN (SELECT MEM_RANK 
+			                FROM TRIP_MEMBER
+			                WHERE MEM_ID = #{buyInfo.memId}) = 'VIP' 
+			        THEN ITEM_PRICE * #{buyInfo.travelers} * 0.9
+			        WHEN (SELECT MEM_RANK 
+			                FROM TRIP_MEMBER
+			                WHERE MEM_ID = #{buyInfo.memId}) = '우수' 
+			        THEN ITEM_PRICE * #{buyInfo.travelers} * 0.95
+			        ELSE ITEM_PRICE * #{buyInfo.travelers} END AS BUY_PRICE
+			FROM TRIP_ITEM
+			WHERE ITEM_CODE = #{buyInfo.itemCode})
+			, #{buyInfo.travelers}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 마일리지 적립 -->
+	<insert id="plusMemPoint">
+		INSERT INTO MEM_POINT(
+			POINT_NUM
+			, POINT
+			, MEM_ID
+			, BOOK_NUM
+			) VALUES (
+			(SELECT NVL(MAX(POINT_NUM),0)+1 FROM MEM_POINT)
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{itemCode}) * #{travelers} * 0.05
+			, #{memId}
+			, #{bookNum}
+			)
+	</insert>
+	
+	<!-- 선택 구매 마일리지 적립 -->
+	<insert id="plusPointList">
+		INSERT INTO MEM_POINT(
+			POINT_NUM
+			, POINT
+			, MEM_ID
+			, BOOK_NUM
+		)
+		<foreach collection="buyList" item="buyInfo" open="(" close=")" separator="UNION ALL" index="i">
+		SELECT
+			(SELECT NVL(MAX(POINT_NUM),0) + 1 + #{i} FROM MEM_POINT) AS POINT_NUM
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{buyInfo.itemCode}) * #{buyInfo.travelers} * 0.05 AS BUY_PRICE
+			, #{buyInfo.memId}
+			, #{buyInfo.bookNum}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 마일리지 적립, 감소시 반영 -->
+	<update id="updateMemPoint">
+		UPDATE TRIP_MEMBER
+			SET
+			MEM_POINT = (SELECT SUM(POINT) FROM MEM_POINT WHERE MEM_ID = #{memId})
+			WHERE MEM_ID = #{memId}
+	</update>
+	
+	
+	<!-- 구매내역의 총 구매내역에 따라 등급 변경 -->
+	<update id="updateMemRank">
+		UPDATE TRIP_MEMBER
+		SET
+		MEM_RANK = (
+		SELECT
+		    CASE
+		        WHEN (SELECT SUM(BUY_PRICE) FROM BOOK_ITEM WHERE MEM_ID = #{memId}) &lt;= 5000000
+		        THEN '일반'
+		        WHEN (SELECT SUM(BUY_PRICE) FROM BOOK_ITEM WHERE MEM_ID = #{memId}) &lt;= 10000000
+		        THEN '우수' 
+		        WHEN (SELECT SUM(BUY_PRICE) FROM BOOK_ITEM WHERE MEM_ID = #{memId}) &gt; 10000000
+		        THEN 'VIP'
+		        ELSE '일반' END AS MEM_RANK
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId})
+		WHERE MEM_ID = #{memId}
+	</update>
+	
+	<select id="selectTempMemberBookInfo" resultMap="bookItem">
+		SELECT BOOK_NUM
+		    , ITEM_CODE
+		    , (SELECT ITEM_NAME
+		        FROM TRIP_ITEM
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE) AS ITEM_NAME
+		    , (SELECT ATTACHED_IMG_NAME
+		        FROM ITEM_IMAGE
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE
+		        AND IS_MAIN = 'Y') AS ATTACHED_IMG_NAME
+		    , (SELECT ITEM_PRICE
+		        FROM TRIP_ITEM
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE) AS ORIGIN_PRICE
+		    , TO_CHAR((SELECT START_DATE
+		        FROM TRIP_ITEM
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE), 'YYYY-MM-DD') AS START_DATE
+		    , TO_CHAR((SELECT END_DATE
+		        FROM TRIP_ITEM
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE), 'YYYY-MM-DD') AS END_DATE
+		    , (SELECT TRIP_DATE
+		        FROM TRIP_ITEM
+		        WHERE ITEM_CODE = BOOK_ITEM.ITEM_CODE) AS TRIP_DATE
+		    , BUY_PRICE
+		    , TRAVELERS
+		    , TO_CHAR(BOOK_DATE, 'YYYY-MM-DD') AS BOOK_DATE
+		    , TEMP_EMAIL
+		FROM BOOK_ITEM
+		WHERE TEMP_EMAIL = #{tempEmail}
+		AND BOOK_NUM = #{bookNum}
+	</select>
+	
+	<select id="findBookInfo" resultType="int">
+		SELECT COUNT(BOOK_NUM)
+		FROM BOOK_ITEM
+		WHERE BOOK_NUM = #{bookNum}
+		AND TEMP_EMAIL = #{tempEmail}
+	</select>
+	
+	<delete id="deleteTempBook">
+		DELETE BOOK_ITEM
+		WHERE BOOK_NUM = #{bookNum}
+		AND TEMP_EMAIL = #{tempEmail}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

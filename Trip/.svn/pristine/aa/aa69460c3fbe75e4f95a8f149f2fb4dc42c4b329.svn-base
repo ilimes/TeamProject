@@ -1,0 +1,74 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.txt, .btn{
+	width: 500px;
+}
+.loginForm{
+    width: 580px;
+    height: 500px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+.loginForm h2{
+	text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+.isMember {
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+}
+.left {
+	width: 50%;
+	float: left;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid #ddd;
+}
+.right {
+	width: 50%;
+	float: right;
+	text-align: center;
+	font-weight: bold;
+	cursor: pointer;
+	color: #5e2bb8;
+	border: 1px solid #333;
+}
+.bottomDiv{
+	margin-top: 40px;
+	text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="loginForm">
+	<h2>Login</h2>
+	<div class="isMember">
+		<div class="left" onclick="location.href='/member/loginForm';">회원 로그인</div>
+		<div class="right">비회원 예약조회</div>
+	</div>
+	<form action="/member/loginTemp" method="post" id="loginTempForm">
+		<div class="txt">
+			<input type="text" id="tempName" name="tempName" placeholder="이름">
+		</div>
+		<div class="nameNull" id="nameNull" style="color: red;"></div>
+		<div class="txt">
+			<input type="text" id="tempNum" name="tempNum" placeholder="예약번호">
+		</div>
+		<div class="numNull	" id="numNull" style="color: red"></div>
+		<div class="d-grid gap-2 col-12 mx-auto">
+		  <button class="btn btn-primary" type="submit">예약조회</button>
+		</div>
+	</form>
+</div>
+</body>
+</html>

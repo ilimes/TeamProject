@@ -1,0 +1,10 @@
+.replyDiv{
+	margin: 20px;
+}
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+.btnDiv{
+	text-align: right;
+}

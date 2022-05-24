@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="buyMapper">
+	<resultMap type="com.project.trip.buy.vo.BuyVO" id="buy">
+		<id column="BOOK_NUM" property="bookNum"/>
+		<result column="MEM_ID" property="memId"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+		<result column="BUY_PRICE" property="buyPrice"/>
+		<result column="TRAVELERS" property="travelers"/>
+		<result column="BOOK_DATE" property="bookDate"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.buy.vo.BookViewVO" id="bookView">
+		<id column="BOOK_NUM" property="bookNum"/>
+		<result column="ITEM_NAME" property="itemName"/>
+		<result column="MEM_ID" property="memId"/>
+		<result column="MEM_NAME" property="memName"/>
+		<result column="MEM_TELL" property="memTell"/>
+		<result column="TRAVELERS" property="travelers"/>
+		<result column="BUY_PRICE" property="buyPrice"/>
+		<result column="BOOK_DATE" property="bookDate"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="TRIP_DATE" property="tripDate"/>
+		<result column="ROW_NUM" property="rowNum"/>
+	</resultMap>
+	
+	<!-- 상품 개별구매 -->
+	<insert id="bookItem">
+		INSERT INTO BOOK_ITEM (
+			BOOK_NUM
+			, MEM_ID
+			, ITEM_CODE
+			, BUY_PRICE
+			, TRAVELERS
+		) VALUES (
+			(SELECT 'BOOK_'|| LPAD(NVL(MAX(TO_NUMBER(SUBSTR(BOOK_NUM, 6, 3))), 0) + 1, 3, 0)
+         	FROM BOOK_ITEM)
+			, #{memId}
+			, #{itemCode}
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{itemCode}) * #{travelers}
+			, #{travelers}
+		)
+	</insert>
+	
+	<!-- 선택한 상품 구매 -->
+	<insert id="selectedBuyCartList">
+		INSERT INTO BOOK_ITEM(
+			BOOK_NUM
+			, MEM_ID
+			, ITEM_CODE
+			, BUY_PRICE
+			, TRAVELERS
+		)
+		<foreach collection="buyList" item="buyInfo" open="(" close=")" separator="UNION ALL" index="i">
+		SELECT
+			(SELECT 'BOOK_'|| LPAD(NVL(MAX(TO_NUMBER(SUBSTR(BOOK_NUM, 6, 3))), 0) + 1 + #{i}, 3, 0)
+         	FROM BOOK_ITEM) AS BOOK_NUM
+			, #{buyInfo.memId}
+			, #{buyInfo.itemCode}
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{buyInfo.itemCode}) * #{buyInfo.travelers} AS BUY_PRICE
+			, #{buyInfo.travelers}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 마일리지 적립 -->
+	<insert id="plusMemPoint">
+		INSERT INTO MEM_POINT(
+			POINT_NUM
+			, POINT
+			, MEM_ID
+			, ITEM_CODE
+			) VALUES (
+			(SELECT NVL(MAX(POINT_NUM),0)+1 FROM MEM_POINT)
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{itemCode}) * #{travelers} * 0.05
+			, #{memId}
+			, #{itemCode}
+			)
+	</insert>
+	<insert id="plusPointList">
+		INSERT INTO MEM_POINT(
+			POINT_NUM
+			, POINT
+			, MEM_ID
+			, ITEM_CODE
+		)
+		<foreach collection="buyList" item="buyInfo" open="(" close=")" separator="UNION ALL" index="i">
+		SELECT
+			(SELECT NVL(MAX(POINT_NUM),0) + 1 + #{i} FROM MEM_POINT) AS POINT_NUM
+			, (SELECT ITEM_PRICE
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE =#{buyInfo.itemCode}) * #{buyInfo.travelers} * 0.05 AS BUY_PRICE
+			, #{buyInfo.memId}
+			, #{buyInfo.itemCode}
+		FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 마일리지 적립, 감소시 반영 -->
+	<update id="updateMemPoint">
+		UPDATE TRIP_MEMBER
+			SET
+			MEM_POINT = (SELECT SUM(POINT) FROM MEM_POINT WHERE MEM_ID = #{memId})
+			WHERE MEM_ID = #{memId}
+	</update>
+	
+	<!-- 마일리지 감소 -->
+	<insert id="minusMemPoint">
+		DELETE MEM_POINT
+		WHERE POINT_NUM = #{pointNum}
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

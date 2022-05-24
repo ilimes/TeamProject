@@ -1,0 +1,21 @@
+package com.project.trip.admin.vo;
+
+public class BookSearchVO {
+	private String searchFromDate;
+	private String searchToDate;
+	
+	public String getSearchFromDate() {
+		return searchFromDate;
+	}
+	public void setSearchFromDate(String searchFromDate) {
+		this.searchFromDate = searchFromDate;
+	}
+	public String getSearchToDate() {
+		return searchToDate;
+	}
+	public void setSearchToDate(String searchToDate) {
+		this.searchToDate = searchToDate;
+	}
+	
+	
+}

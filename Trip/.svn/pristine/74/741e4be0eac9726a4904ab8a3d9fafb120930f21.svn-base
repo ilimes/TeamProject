@@ -1,0 +1,26 @@
+package com.project.trip.interceptor;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.admin.vo.SideMenuVO;
+
+@Service("menuInterceptor")
+public class MenuInterceptor extends HandlerInterceptorAdapter{
+	
+	@Resource(name = "adminService")
+	private AdminService adminService;
+	
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		//관리자 메뉴 목록 조회
+			
+			
+	}
+}

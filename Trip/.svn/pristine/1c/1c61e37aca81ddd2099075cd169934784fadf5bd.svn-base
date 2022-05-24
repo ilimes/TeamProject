@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.sideMenuDiv{
+	padding: 20px 0px 20px 0px;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+}
+.sideMenuDiv div{
+	font-size: 18px;
+	line-height: 40px;
+}
+</style>
+</head>
+<body>
+<div><h2><strong>관리자 메뉴</strong></h2></div>
+<div class="sideMenuDiv">
+	<div>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+  			<path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+		</svg> <a href="/admin/itemManage">상품등록</a>
+	</div>
+	<div>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+  			<path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+		</svg> <a href="/admin/itemList">상품목록</a>
+	</div>
+	<div>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+  			<path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+		</svg> 상품수정
+	</div>
+</div>
+</body>
+</html>

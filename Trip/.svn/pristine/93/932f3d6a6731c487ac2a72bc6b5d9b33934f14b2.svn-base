@@ -1,0 +1,76 @@
+package com.project.trip.admin.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.project.trip.admin.vo.AdminMenuVO;
+import com.project.trip.admin.vo.MenuVO;
+import com.project.trip.admin.vo.SideMenuVO;
+import com.project.trip.item.vo.ImageVO;
+import com.project.trip.item.vo.ItemCateVO;
+import com.project.trip.item.vo.ItemVO;
+
+@Service("adminService")
+public class AdminServiceImpl implements AdminService{
+	
+	//세션 사용하기 위해 객체 생성
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+	
+	//상품목록(지역) 카테고리
+	@Override
+	public List<ItemCateVO> selectItemCategory() {
+		return sqlSession.selectList("adminMapper.selectItemCategory");
+	}
+	
+	//상품 등록
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void regItem(ItemVO itemVO, ImageVO imageVO) {
+		sqlSession.insert("adminMapper.regItem", itemVO);
+		sqlSession.insert("adminMapper.insertImages", imageVO);
+		
+	}
+	
+	//상단 메뉴리스트 조회
+	@Override
+	public List<MenuVO> selectMenuList() {
+		return sqlSession.selectList("adminMapper.selectMenuList");
+	}
+
+	//사이드 메뉴리스트 조회
+	@Override
+	public List<SideMenuVO> selectSideMenuList(SideMenuVO sideMenuVO) {
+		return sqlSession.selectList("adminMapper.selectSideMenuList", sideMenuVO);
+	}
+	
+	//관리자 메뉴리스트 조회
+	@Override
+    public List<AdminMenuVO> selectAdminMenuList() {
+		return sqlSession.selectList("adminMapper.selectAdminMenuList");
+    }
+	
+	//다음에 올 아이템 코드
+	@Override
+	public String selectNextItemCode() {
+		return sqlSession.selectOne("adminMapper.selectNextItemCode");
+	}
+	
+	//다음에 올 이미지 코드
+	@Override
+	public int selectNextImgCode() {
+		return sqlSession.selectOne("adminMapper.selectNextImgCode");
+	}
+	
+	//선택 상품 삭제
+	@Override
+	public void deleteSelectedItem(ItemVO itemVO) {
+		sqlSession.delete("adminMapper.deleteSelectedItem", itemVO);
+		
+	}
+	
+}

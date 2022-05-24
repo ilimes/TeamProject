@@ -1,0 +1,78 @@
+package com.project.trip.buy.vo;
+
+public class BookViewVO {
+	private String bookNum;
+	private String itemName;
+	private String memName;
+	private String memTell;
+	private int buyPrice;
+	private int travelers;
+	private String bookDate;
+	private String startDate;
+	private String endDate;
+	private String tripDate;
+	
+	
+	public String getBookNum() {
+		return bookNum;
+	}
+	public void setBookNum(String bookNum) {
+		this.bookNum = bookNum;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public int getBuyPrice() {
+		return buyPrice;
+	}
+	public void setBuyPrice(int buyPrice) {
+		this.buyPrice = buyPrice;
+	}
+	public String getMemName() {
+		return memName;
+	}
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
+	public int getTravelers() {
+		return travelers;
+	}
+	public void setTravelers(int travelers) {
+		this.travelers = travelers;
+	}
+	public String getMemTell() {
+		return memTell;
+	}
+	public void setMemTell(String memTell) {
+		this.memTell = memTell;
+	}
+	public String getBookDate() {
+		return bookDate;
+	}
+	public void setBookDate(String bookDate) {
+		this.bookDate = bookDate;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getTripDate() {
+		return tripDate;
+	}
+	public void setTripDate(String tripDate) {
+		this.tripDate = tripDate;
+	}
+	
+	
+}

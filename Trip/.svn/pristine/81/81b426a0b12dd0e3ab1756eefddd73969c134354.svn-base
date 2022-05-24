@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div>찾아오시는 길 페이지 입니다.</div>
+<div>
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3246.7547132647105!2d129.30870971554816!3d35.53505874558138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35662d66cf9ecfaf%3A0x2d8f16207dd9335b!2zKOyjvCnsmrjsgrBLSOygleuztOq1kOycoeybkA!5e0!3m2!1sko!2skr!4v1650263154227!5m2!1sko!2skr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+</body>
+</html>

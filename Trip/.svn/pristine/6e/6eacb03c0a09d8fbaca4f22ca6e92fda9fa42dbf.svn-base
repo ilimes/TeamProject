@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="cartMapper">
+	<resultMap type="com.project.trip.cart.vo.CartVO" id="cart">
+		<id column="CART_CODE" 			property="cartCode"/>
+		<result column="ITEM_CODE" 		property="itemCode"/>
+		<result column="MEM_ID" 		property="memId"/>
+		<result column="BUY_DATE" 		property="buyDate"/>
+		<result column="ITEM_CNT" 		property="itemCnt"/>
+	</resultMap>
+	
+	<select id="selectCartList" resultMap="cart">
+		SELECT CART_CODE
+			, ITEM_CODE
+			, MEM_ID
+			, BUY_DATE
+			, ITEM_CNT
+		FROM TRIP_CART
+	</select>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

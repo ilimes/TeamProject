@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="memberMapper">
+	<resultMap type="com.project.trip.member.vo.MemberVO" id="member">
+		<id column="MEM_ID" 			property="memId"/>
+		<result column="MEM_PW" 		property="memPw"/>
+		<result column="MEM_NAME" 		property="memName"/>
+		<result column="MEM_TELL" 		property="memTell"/>
+		<result column="MEM_BIRTHDAY" 	property="memBirthday"/>
+		<result column="MEM_GENDER" 	property="memGender"/>
+		<result column="MEM_ADDR" 		property="memAddr"/>
+		<result column="IS_ADMIN" 		property="isAdmin"/>
+		<result column="JOIN_DATE" 		property="joinDate"/>
+		<result column="BUY_CNT" property="buyCnt"/>
+		<result column="TOTAL_PRICE" property="totalPrice"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.member.vo.TempMemberVO" id="tempMember">
+		<id column="TEMP_NUM" 			property="tempNum"/>
+		<result column="TEMP_NAME" 		property="tempName"/>
+		<result column="TEMP_TELL" 		property="tempTell"/>
+		<result column="TEMP_BIRTHDAY" 	property="tempBirthday"/>
+		<result column="TEMP_EMAIL" 	property="tempEmail"/>
+	</resultMap>
+
+	<insert id="join">
+		INSERT INTO TRIP_MEMBER(
+			MEM_ID
+			, MEM_PW
+			, MEM_NAME
+			, MEM_TELL
+			, MEM_BIRTHDAY
+			, MEM_GENDER
+			, MEM_ADDR
+		) VALUES(
+			#{memId}
+			, #{memPw}
+			, #{memName}
+			, #{memTell}
+			, #{memBirthday}
+			, #{memGender}
+			, #{memAddr}
+		)
+	</insert>
+	
+	<select id="login" resultMap="member">
+		SELECT MEM_ID
+			, MEM_NAME
+			, IS_ADMIN
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+		AND MEM_PW = #{memPw}
+	</select>
+	
+	<select id="selectId" resultType="String">
+		SELECT MEM_ID
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<select id="selectTell" resultType="String">
+		SELECT MEM_TELL
+		FROM TRIP_MEMBER
+		WHERE MEM_TELL = #{memTell}
+	</select>
+	
+	<select id="selectName" resultType="String">
+		SELECT MEM_NAME
+		FROM TRIP_MEMBER
+		WHERE MEM_NAME = #{memName}
+	</select>
+	
+	<select id="findId" resultMap="member">
+		SELECT MEM_ID
+			, MEM_NAME
+		FROM TRIP_MEMBER
+		WHERE MEM_TELL = #{memTell}
+		AND MEM_NAME = #{memName}
+		AND MEM_GENDER = #{memGender}
+		AND MEM_BIRTHDAY = #{memBirthday}
+	</select>
+	
+	<select id="tempLogin" resultMap="tempMember">
+		SELECT TEMP_NUM
+			, TEMP_NAME
+		FROM TEMP_MEMBER
+		WHERE TEMP_NUM = #{tempNum}
+		AND TEMP_NAME = #{tempName}
+	</select>
+	
+	<select id="findPw" resultMap="member">
+		SELECT MEM_PW
+			, MEM_NAME
+			, MEM_ID
+		FROM TRIP_MEMBER
+		WHERE MEM_ID = #{memId}
+	</select>
+	
+	<update id="changePw">
+		UPDATE TRIP_MEMBER
+		SET MEM_PW = #{memPw}
+		WHERE MEM_ID = #{memId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

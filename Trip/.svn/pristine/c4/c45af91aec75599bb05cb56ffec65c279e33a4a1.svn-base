@@ -1,0 +1,114 @@
+package com.project.trip.buy.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.trip.buy.service.BuyService;
+import com.project.trip.buy.vo.BuyVO;
+import com.project.trip.cart.vo.CartVO;
+import com.project.trip.item.service.ItemService;
+import com.project.trip.item.vo.ItemVO;
+import com.project.trip.member.service.MemberService;
+import com.project.trip.member.vo.MemberVO;
+
+import net.sf.json.JSONArray;
+	
+@CrossOrigin(value="*", methods ={RequestMethod.GET, RequestMethod.POST})
+@Controller
+@RequestMapping("/buy")
+public class BuyController {
+	
+	@Resource(name = "buyService")
+	private BuyService buyService;
+	
+	@Resource(name = "itemService")
+	private ItemService itemService;
+	
+	@Resource(name = "memberService")
+	private MemberService memberService;
+
+	//상품 단일구매
+	@PostMapping("/buyItem")
+	@ResponseBody
+	public BuyVO buyItem(BuyVO buyVO, HttpSession session) {
+		String memId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		
+		buyVO.setMemId(memId);
+		
+		buyService.bookItem(buyVO);
+		
+		return buyVO;
+		
+	}
+	
+	//상품 선택구매
+	@PostMapping("/tripBook")
+	@ResponseBody
+	public void tripBook(Model model, String data, HttpSession session, BuyVO buyVO) {
+		
+		String memId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		
+		List<Map<String, String>> list = JSONArray.fromObject(data);
+		//itemCode가 담길 배열
+		String[] itemCodeArr = new String[list.size()];
+		int index = 0;
+		
+		List<BuyVO> buyList = new ArrayList<BuyVO>();
+		for(Map<String, String> map : list) {
+			System.out.println("itemCode : " + map.get("itemCode") + " / travelers=" + map.get("travelers"));
+			
+			BuyVO vo = new BuyVO();
+			vo.setMemId(memId);
+			vo.setItemCode(map.get("itemCode"));
+			vo.setTravelers(Integer.parseInt(map.get("travelers")));
+			
+			buyList.add(vo);
+			itemCodeArr[index++] = map.get("itemCode");
+		}
+		buyVO.setBuyList(buyList);
+		CartVO cartVO = new CartVO(); //memId, itemCode
+		cartVO.setMemId(memId);
+		buyVO.setMemId(memId);
+		cartVO.setItemCodeArr(itemCodeArr);
+		buyService.selectedBuyCartList(buyVO, cartVO);
+	}
+	
+	@RequestMapping("/buyForm")
+	public String buyForm(Model model, HttpSession session, BuyVO buyVO, ItemVO itemVO, MemberVO memberVO) {
+		String memId = ((MemberVO)(session.getAttribute("loginInfo"))).getMemId();
+		
+		memberVO.setMemId(memId);
+		
+		model.addAttribute("bookItemCnt", itemService.selectBookItemCnt(itemVO));
+		model.addAttribute("memberInfo", memberService.selectMemberInfo(memberVO));
+		model.addAttribute("itemInfo", itemService.selectItemDetail(itemVO));
+		
+		return "buy/buy_form";
+	}
+	
+	@GetMapping("/buySuccess")
+	public String buySuccess(BuyVO buyVO) {
+		return "buy/buy_success";
+	}
+	
+	@GetMapping("/buyFail")
+	public String buyFail(Model model, String errorMsg) {
+		model.addAttribute("errorMsg", errorMsg);
+		return "buy/buy_fail";
+	}
+
+}

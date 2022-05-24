@@ -1,0 +1,28 @@
+.memTable{
+	width: 90%;
+	margin: 0 auto;
+	border: 1px solid black;
+	border-collapse: collapse;
+	text-align: center;
+	vertical-align: middle;
+	letter-spacing: 2px;
+	margin-top: 20px;
+}
+.memTable tr {
+	height: 55px;
+}
+.memTable td:nth-child(odd) {
+	background-color: #adb5bd;
+	font-weight: bold;
+}
+
+.memTable tr, td{
+	border: 1px solid #ccc;
+	padding: 4px;
+}
+.memTable thead > tr {
+	font-weight: bold;
+}
+.memTable thead > tr:first-child {
+	background-color: #EDE6DB;
+}

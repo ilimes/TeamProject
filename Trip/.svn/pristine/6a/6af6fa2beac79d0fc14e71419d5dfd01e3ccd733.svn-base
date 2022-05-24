@@ -1,0 +1,31 @@
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+h4{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+table{
+	margin: 20px 0 20px 0;
+	width: 100%;
+}
+table td{
+	padding: 20px;
+	height: 50px;
+	border-bottom: 1px solid #F0F0F0; 
+}
+table td:nth-child(odd){
+	font-weight: bold;
+	padding: 0 40px 0 40px;
+	width: 150px;
+	text-align: center;
+	background-color: #F7F8F9;
+}
+.btnDiv{
+	text-align: right;
+}

@@ -1,0 +1,51 @@
+package com.project.util;
+
+import java.util.Calendar;
+
+public class TripUtil {
+	
+	// 날짜 받아오기
+	
+	private static Calendar cal = Calendar.getInstance();
+	
+	//오늘날짜를 문자열로 리턴
+	public static String getNowDateToString() {
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int date = cal.get(Calendar.DATE);
+		
+		String strMonth = "";
+		if(month / 10 == 0) {
+			strMonth = "0" + month;
+		}
+		else {
+			strMonth = "" + month;
+		}
+		
+		String strDate = "";
+		if(cal.get(Calendar.DATE) / 10 == 0) {
+			strDate = "0" + date;
+		}
+		else {
+			strDate = "" + date;
+		}
+		
+		
+		return year + "-" + strMonth + "-" + strDate;
+	}
+	public static String getStartDateToString() {
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		String today = "0" + cal.getMinimum(Calendar.DAY_OF_MONTH);
+		
+		String strMonth = "";
+		if(month / 10 == 0) {
+			strMonth = "0" + month;
+		}
+		else {
+			strMonth = "" + month;
+		}
+		
+		return year + "-" + strMonth + "-" + today;
+	}
+}

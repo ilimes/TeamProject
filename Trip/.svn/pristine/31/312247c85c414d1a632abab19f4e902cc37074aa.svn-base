@@ -1,0 +1,32 @@
+function regItem(){
+	
+	var selectBox = document.getElementById('categorySelector').value;
+	
+	//패키지명 미기입 시 alert
+	var bookName = document.getElementById('itemName').value;
+	
+	if(bookName == ''){
+		alert('패키지명은 필수입력입니다.');
+		return ;
+	}
+	
+	//가격 미기입 시 alert
+	var bookPrice = document.getElementById('itemPrice').value;
+	
+	if(bookPrice == ''){
+		alert('가격은 필수입력입니다.');
+		return ;
+	}
+	
+	//카테고리 미선택 시 alert
+	if(selectBox == 1){
+		alert('카테고리를 선택해주세요');
+		return ;
+	}
+	
+	//폼태그 submit
+	var regItem = document.getElementById('itemRegForm');
+	alert('등록 완료');
+	regItem.submit();
+	
+}

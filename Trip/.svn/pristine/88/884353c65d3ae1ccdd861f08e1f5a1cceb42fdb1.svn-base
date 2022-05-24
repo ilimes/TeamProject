@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 모든 SQL문을 mapper태그 안에 작성 -->
+<mapper namespace="itemMapper">
+	<resultMap type="com.project.trip.item.vo.ItemVO" id="item">
+		<id column="ITEM_CODE" property="itemCode" />
+		<result column="ITEM_NAME" property="itemName" />
+		<result column="ITEM_PRICE" property="itemPrice" />
+		<result column="ITEM_DETAIL" property="itemDetail" />
+		<result column="START_DATE" property="startDate" />
+		<result column="END_DATE" property="endDate" />
+		<result column="TRIP_DATE" property="tripDate" />
+		<result column="CATE_CODE" property="cateCode" />
+		<result column="ROW_NUM" property="rowNum"/>
+		<result column="RATE_AVG" property="rateAvg"/>
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<association property="itemCateVO" resultMap="adminMapper.itemCate"/>
+		<collection property="imageList" resultMap="image"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.item.vo.ImageVO" id="image">
+		<id column="IMG_CODE" property="imgCode"/>
+		<result column="ORIGIN_IMG_NAME" property="originImgName"/>
+		<result column="ATTACHED_IMG_NAME" property="attachedImgName"/>
+		<result column="IS_MAIN" property="isMain"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+	</resultMap>
+	
+	<resultMap type="com.project.trip.item.vo.ReviewVO" id="review">
+		<id column="REVIEW_NUM" property="reviewNum"/>
+		<result column="ITEM_RATE" property="itemRate"/>
+		<result column="TITLE" property="title"/>
+		<result column="WRITER" property="writer"/>
+		<result column="CONTENT" property="content"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="READ_CNT" property="readCnt"/>
+		<result column="ITEM_CODE" property="itemCode"/>
+		<result column="ROW_NUM" property="rowNum"/>
+		<association property="itemVO" resultMap="item"></association>
+	</resultMap>
+	
+	<!-- 상품 목록 조회 쿼리 -->
+	<select id="selectItemList" resultMap="item">
+		SELECT ITEM.ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, ITEM_DETAIL
+			, ATTACHED_IMG_NAME
+			, TRIP_DATE
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+			, TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+			, CATE_CODE
+			, (SELECT CATE_NAME
+				FROM ITEM_CATE
+				WHERE CATE_CODE = ITEM.CATE_CODE) AS CATE_NAME
+			, (SELECT ROUND(NVL(AVG(ITEM_RATE),0), 1)
+		        FROM ITEM_REVIEW
+		        WHERE ITEM_CODE=ITEM.ITEM_CODE) AS RATE_AVG
+		FROM TRIP_ITEM ITEM, ITEM_IMAGE IMG
+		WHERE ITEM.ITEM_CODE = IMG.ITEM_CODE 
+		AND IS_MAIN = 'Y'
+		<if test="cateCode != null and !cateCode.equals('')">
+		AND CATE_CODE = #{cateCode}
+		</if>
+		ORDER BY ITEM.ITEM_CODE DESC
+	</select>
+	
+	<select id="selectItemDetail" resultMap="item">
+		SELECT ITEM.ITEM_CODE
+			, ITEM_NAME
+			, ITEM_PRICE
+			, ITEM_DETAIL
+			, ATTACHED_IMG_NAME
+			, TRIP_DATE
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+			, TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+			, CATE_CODE
+			, (SELECT ROUND(NVL(AVG(ITEM_RATE),0), 1)
+		        FROM ITEM_REVIEW
+		        WHERE ITEM_CODE=ITEM.ITEM_CODE) AS RATE_AVG
+			, IS_MAIN
+		FROM TRIP_ITEM ITEM, ITEM_IMAGE IMG
+		WHERE ITEM.ITEM_CODE = IMG.ITEM_CODE 
+		<if test="cateCode != null and !cateCode.equals('')">
+		AND CATE_CODE = #{cateCode}
+		</if>
+		AND ITEM.ITEM_CODE = #{itemCode}
+	</select>
+	
+	<!-- 삭제할 상품 이미지목록 -->
+	<select id="selectImageList" resultMap="image">
+		SELECT ATTACHED_IMG_NAME
+		FROM ITEM_IMAGE
+		WHERE ITEM_CODE IN 
+		<foreach item="itemCode" collection="itemCodeArr" open="(" close=")" separator=", ">#{itemCode}</foreach>
+	</select>
+	
+	<insert id="insertReview">
+		INSERT INTO ITEM_REVIEW (
+			REVIEW_NUM
+			, ITEM_RATE
+			, TITLE
+			, WRITER
+			, CONTENT
+			, ITEM_CODE
+		) VALUES (
+			(SELECT NVL(MAX(REVIEW_NUM), 0) + 1 FROM ITEM_REVIEW)
+			, #{itemRate}
+			, #{title}
+			, #{writer}
+			, #{content}
+			, #{itemCode}
+		)
+	</insert>
+	
+	<select id="selectReviewList" resultMap="review">
+		SELECT REVIEW_NUM
+            , TITLE
+           	<!--  , CONTENT -->
+            , WRITER
+            , ITEM_RATE
+            , CREATE_DATE
+            , READ_CNT
+            , ITEM_CODE
+			, ITEM_NAME
+	        , ROW_NUM
+		FROM (
+			SELECT REVIEW_NUM
+	            , TITLE
+	           	<!--  , CONTENT -->
+	            , WRITER
+	            , ITEM_RATE
+	            , CREATE_DATE
+	            , READ_CNT
+	            , ITEM_CODE
+				, ITEM_NAME
+		        , ROWNUM AS ROW_NUM
+		    FROM (
+		    	SELECT REVIEW_NUM
+		            , TITLE
+		           	<!--  , CONTENT -->
+		            , WRITER
+		            , ITEM_RATE
+		            , TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+		            , READ_CNT
+		            , ITEM_CODE
+					, (SELECT ITEM_NAME
+						FROM TRIP_ITEM
+						WHERE ITEM_CODE = ITEM_REVIEW.ITEM_CODE) AS ITEM_NAME
+		        FROM ITEM_REVIEW
+		        ORDER BY REVIEW_NUM DESC
+		        )
+	        )
+       WHERE ROW_NUM &gt;= #{startNum} AND ROW_NUM &lt;= #{endNum}
+	</select>
+	
+	<select id="selectReviewDetail" resultMap="review">
+		SELECT REVIEW_NUM
+			, ITEM_RATE
+			, TITLE
+			, WRITER
+			, CONTENT
+			, CREATE_DATE
+			, READ_CNT
+			, ITEM_CODE
+			, (SELECT ITEM_NAME
+				FROM TRIP_ITEM
+				WHERE ITEM_CODE = ITEM_REVIEW.ITEM_CODE) AS ITEM_NAME
+		FROM ITEM_REVIEW
+		WHERE REVIEW_NUM = #{reviewNum}
+	</select>
+	
+	<select id="selectReviewListCnt" resultType="int">
+		SELECT COUNT(REVIEW_NUM)
+		FROM ITEM_REVIEW
+	</select>
+	
+	<update id="updateReadCnt">
+		UPDATE ITEM_REVIEW
+		SET READ_CNT = READ_CNT + 1
+		WHERE REVIEW_NUM = #{reviewNum}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,75 @@
+package com.project.trip.item.vo;
+
+import java.util.List;
+
+import com.project.trip.admin.vo.BookSearchVO;
+
+public class ItemVO extends BookSearchVO{
+	private String ItemCode;
+	private String itemName;
+	private int itemPrice;
+	private String itemDetail;
+	private String tripDate;
+	private String cateCode;
+	private String attachedImgName;
+	private List<ImageVO> imageList;
+	private String[] itemCodeArr;
+	
+	
+	public String[] getItemCodeArr() {
+		return itemCodeArr;
+	}
+	public void setItemCodeArr(String[] itemCodeArr) {
+		this.itemCodeArr = itemCodeArr;
+	}
+	public String getAttachedImgName() {
+		return attachedImgName;
+	}
+	public void setAttachedImgName(String attachedImgName) {
+		this.attachedImgName = attachedImgName;
+	}
+	public List<ImageVO> getImageList() {
+		return imageList;
+	}
+	public void setImageList(List<ImageVO> imageList) {
+		this.imageList = imageList;
+	}
+	public String getItemCode() {
+		return ItemCode;
+	}
+	public void setItemCode(String itemCode) {
+		ItemCode = itemCode;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public int getItemPrice() {
+		return itemPrice;
+	}
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+	public String getItemDetail() {
+		return itemDetail;
+	}
+	public void setItemDetail(String itemDetail) {
+		this.itemDetail = itemDetail;
+	}
+	public String getTripDate() {
+		return tripDate;
+	}
+	public void setTripDate(String tripDate) {
+		this.tripDate = tripDate;
+	}
+	public String getCateCode() {
+		return cateCode;
+	}
+	public void setCateCode(String cateCode) {
+		this.cateCode = cateCode;
+	}
+	
+
+}

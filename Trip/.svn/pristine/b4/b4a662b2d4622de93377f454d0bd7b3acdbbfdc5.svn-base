@@ -1,0 +1,80 @@
+package com.project.trip.item.vo;
+
+import com.project.trip.board.vo.PageVO;
+
+public class ReviewVO extends PageVO {
+	private int reviewNum;
+	private int itemRate;
+	private String title;
+	private String writer;
+	private String content;
+	private String createDate;
+	private int readCnt;
+	private String itemCode;
+	private String rowNum;
+	private ItemVO itemVO;
+	
+	public int getReviewNum() {
+		return reviewNum;
+	}
+	public void setReviewNum(int reviewNum) {
+		this.reviewNum = reviewNum;
+	}
+	public int getItemRate() {
+		return itemRate;
+	}
+	public void setItemRate(int itemRate) {
+		this.itemRate = itemRate;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public int getReadCnt() {
+		return readCnt;
+	}
+	public void setReadCnt(int readCnt) {
+		this.readCnt = readCnt;
+	}
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public ItemVO getItemVO() {
+		return itemVO;
+	}
+	public void setItemVO(ItemVO itemVO) {
+		this.itemVO = itemVO;
+	}
+	public String getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(String rowNum) {
+		this.rowNum = rowNum;
+	}
+	
+	
+	
+}

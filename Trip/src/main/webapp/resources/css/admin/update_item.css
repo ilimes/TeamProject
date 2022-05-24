@@ -1,0 +1,27 @@
+.regTable{
+	text-align: center;
+	vertical-align: middle;
+}
+textarea {
+	resize: none;
+}
+.regTable tr > td:nth-child(odd){
+	width: 15%;
+	font-weight: bold;
+	background-color: #DDDDDD;
+	border-bottom: 1px solid white;
+}
+.regTable tr> td:nth-child(even){
+	width: 35%;
+}
+.regTable input[type=date]{
+	letter-spacing: 3px;
+	width: 80%;
+	text-align: center;
+	border: none;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}

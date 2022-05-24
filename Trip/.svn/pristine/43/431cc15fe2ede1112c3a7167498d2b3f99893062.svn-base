@@ -1,0 +1,8 @@
+package com.project.trip.cart.service;
+
+import org.springframework.stereotype.Service;
+
+@Service("cartService")
+public class CartServiceImpl implements CartService {
+
+}

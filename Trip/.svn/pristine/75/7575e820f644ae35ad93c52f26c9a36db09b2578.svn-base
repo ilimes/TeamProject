@@ -1,0 +1,17 @@
+package com.project.trip.buy.service;
+
+import java.util.List;
+
+import com.project.trip.buy.vo.BuyVO;
+
+public interface BuyService {
+	
+	//상품 구매시 구매정보 등록
+	void insertBook(BuyVO buyVO);
+	
+	//구매정보 목록 조회
+	List<BuyVO> selectBookList();
+	
+	//선택 상품 구매
+	void selectedBuyCartList(BuyVO buyVO);
+}

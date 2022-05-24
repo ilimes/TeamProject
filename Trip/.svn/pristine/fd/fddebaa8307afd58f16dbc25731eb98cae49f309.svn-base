@@ -1,0 +1,13 @@
+package com.project.trip.item.service;
+
+import java.util.List;
+
+import com.project.trip.item.vo.ImageVO;
+import com.project.trip.item.vo.ItemVO;
+
+public interface ItemService {
+	
+	List<ItemVO> selectItemList();
+	
+	List<ImageVO> selectImageList(ItemVO itemVO);
+}

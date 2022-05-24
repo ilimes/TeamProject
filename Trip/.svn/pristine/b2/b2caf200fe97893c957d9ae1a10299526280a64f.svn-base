@@ -1,0 +1,87 @@
+package com.project.trip.member.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.member.service.MemberService;
+import com.project.trip.member.vo.MemberVO;
+
+@Controller
+@RequestMapping("/member")
+public class MemberController {
+	
+	@Resource(name = "memberService")
+	private MemberService memberService;
+
+	@Resource(name = "adminService")
+	private AdminService adminService;
+	
+	@GetMapping("/loginForm")
+	public String loginForm(Model model) {
+		//최상단 메뉴 리스트 보내기
+		model.addAttribute("menuList", adminService.selectMenuList());
+		return "member/login";
+	}
+	
+	@GetMapping("/joinForm")
+	public String joinForm(Model model) {
+		model.addAttribute("menuList", adminService.selectMenuList());
+		return "member/join";
+	}
+	
+	@GetMapping("/loginTempForm")
+	public String loginTempForm(Model model) {
+		model.addAttribute("menuList", adminService.selectMenuList());
+		return "member/login_temp";
+	}
+	
+	@PostMapping("/join")
+	public String join(MemberVO memberVO) {
+		memberService.join(memberVO);
+		return "member/login";
+	}
+	
+	@ResponseBody
+	@PostMapping("/login")
+	public boolean login(MemberVO memberVO, HttpSession session) {
+		MemberVO result = memberService.login(memberVO);
+		
+		if(result != null) {
+			session.setAttribute("loginInfo", result);
+			
+		}
+		return result == null ? false : true;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginInfo");
+		return "redirect:/member/loginForm";
+	}
+	
+	@ResponseBody
+	@PostMapping("/selectId")
+	public boolean selectId(HttpSession session) {
+		String result = memberService.selectId();
+		
+		if(result != null) {
+			session.setAttribute("id", result);
+		}
+		
+		return result == null ? false : true;
+	}
+}

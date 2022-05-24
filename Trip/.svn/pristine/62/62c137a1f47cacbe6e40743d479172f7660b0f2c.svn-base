@@ -1,0 +1,92 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+table {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+}
+thead td{
+	font-size: 19px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom: 1px solid black;
+}
+tbody td {
+	border-bottom: 1px solid #eeeeee;
+}
+.notice{
+	color: #5e2bb8;
+	font-weight: bold;
+	background-color: #f5f4f4;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}
+</style>
+</head>
+<body>
+<div>
+	<div class="titleDiv">
+		<h3>${boardTitle }</h3>
+	</div>
+	<div>
+		<table>
+			<colgroup>
+				<col width="10%">
+				<col width="50%">
+				<col width="20%">
+				<col width="20%">
+			</colgroup>
+			<thead>
+				<tr>
+					<td>번호</td>
+					<td>제목</td>
+					<td>작성일</td>
+					<td>조회수</td>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${boardList }" var="board">
+					<c:if test="${board.isMain eq 'Y' }">
+						<tr class="notice">
+							<td>[공지]</td>
+							<td><a href="/board/boardDetail?sideMenuCode=${sideMenuVO.sideMenuCode }&boardNum=${board.boardNum }">${board.title }</a></td>
+							<td>${board.createDate }</td>
+							<td>${board.readCnt }</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+				<c:forEach items="${boardList }" var="board" varStatus="vS">
+					<tr>
+						<td>${boardList.size() - vS.index }</td>
+						<td><a href="/board/boardDetail?sideMenuCode=${sideMenuVO.sideMenuCode }&boardNum=${board.boardNum }">${board.title }</a></td>
+						<td>${board.createDate }</td>
+						<td>${board.readCnt }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<div class="btnDiv">
+		<div class="btn" style="width: 130px;" onclick="location.href='/board/boardWriteForm?sideMenuCode=${sideMenuVO.sideMenuCode }';">글쓰기</div>
+	</div>
+</div>
+</body>
+</html>

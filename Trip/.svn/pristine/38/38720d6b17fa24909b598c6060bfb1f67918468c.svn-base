@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<link rel="stylesheet" type="text/css" href="/resources/css/admin/map_test2.css" />
+<script type="module" src="/resources/js/admin/map_test2.js?ver=6"></script>
+</head>
+<body>
+
+<div id="map" style="width: 100%; height: 400px;"></div>
+<div id="floating-panel">
+      <input id="hide-markers" type="button" value="Hide Markers" />
+      <input id="show-markers" type="button" value="Show Markers" />
+      <input id="delete-markers" type="button" value="Delete Markers" />
+</div>
+<div class="fuck"></div>
+
+
+
+<div id="floating-panel">
+      <b>Mode of Travel: </b>
+      <select id="mode">
+        <option value="DRIVING">Driving</option>
+        <option value="WALKING">Walking</option>
+        <option value="BICYCLING">Bicycling</option>
+        <option value="TRANSIT">Transit</option>
+      </select>
+    </div>
+
+
+<div id="map1" style="width: 100%; height: 400px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9EOGfpUtYXF_DcaelmH6B3wdLJv2diGk&callback=initMap&v=weekly&region=KR" defer></script>
+</body>
+</html>

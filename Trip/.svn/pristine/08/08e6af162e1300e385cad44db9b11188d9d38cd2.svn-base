@@ -1,0 +1,66 @@
+package com.project.trip.item.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.project.trip.board.vo.PageVO;
+import com.project.trip.item.vo.ImageVO;
+import com.project.trip.item.vo.ItemVO;
+import com.project.trip.item.vo.ReviewVO;
+
+@Service("itemService")
+public class ItemServiceImpl implements ItemService{
+	
+	@Autowired
+	SqlSessionTemplate sqlSession;
+	
+	//상품 목록 조회
+	@Override
+	public List<ItemVO> selectItemList(ItemVO itemVO) {
+		return sqlSession.selectList("itemMapper.selectItemList", itemVO);
+	}
+	
+	//상품 이미지 조회
+	@Override
+	public List<ImageVO> selectImageList(ItemVO itemVO) {
+		return sqlSession.selectList("itemMapper.selectImageList", itemVO);
+	}
+
+	@Override
+	public ItemVO selectItemDetail(ItemVO itemVO) {
+		return sqlSession.selectOne("itemMapper.selectItemDetail", itemVO);
+	}
+
+	@Override
+	public void insertReview(ReviewVO reviewVO) {
+		sqlSession.insert("itemMapper.insertReview", reviewVO);
+	}
+
+	@Override
+	public List<ReviewVO> selectReviewList(PageVO pageVO) {
+		return sqlSession.selectList("itemMapper.selectReviewList", pageVO);
+	}
+
+	@Override
+	public ReviewVO selectReviewDetail(ReviewVO reviewVO) {
+		return sqlSession.selectOne("itemMapper.selectReviewDetail", reviewVO);
+	}
+
+	@Override
+	public int selectReviewListCnt() {
+		return sqlSession.selectOne("itemMapper.selectReviewListCnt");
+	}
+
+	@Override
+	public void updateReadCnt(ReviewVO reviewVO) {
+		sqlSession.update("itemMapper.updateReadCnt", reviewVO);
+	}
+	
+	
+
+	
+	
+}

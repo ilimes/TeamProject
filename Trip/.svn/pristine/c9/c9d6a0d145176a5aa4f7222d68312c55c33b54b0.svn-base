@@ -1,0 +1,10 @@
+package com.project.trip.cart.service;
+
+import com.project.trip.cart.vo.CartVO;
+
+public interface CartService {
+	
+	//장바구니에 아이템 넣기
+	int insertCart(CartVO cartVO);
+	
+}

@@ -1,0 +1,14 @@
+.chatLogin {
+	display: flex;
+	justify-content: center;
+	padding-top: 60px;
+}
+.chatLogins{
+	width: 700px;
+}
+.a{
+	width: 700px;
+}
+#loginForm > div {
+    margin: 15px 0;
+}

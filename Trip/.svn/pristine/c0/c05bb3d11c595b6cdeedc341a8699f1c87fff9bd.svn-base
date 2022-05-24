@@ -1,0 +1,12 @@
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.updateDiv{
+	border: 1px solid black;
+	padding: 1.3rem;
+}

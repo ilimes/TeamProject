@@ -1,0 +1,118 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.itemListDiv{
+	border: 1px solid black;
+	border-color: #838999;
+	border-radius: 15px;
+	height: 330px;
+	padding: 30px;
+	margin-bottom: 30px;
+}
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 40px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+/* 글자 수 n번째 줄 까지만 나오게 하기  */
+.detailDiv{
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	word-wrap: break-word; 
+	display: -webkit-box; 
+	-webkit-line-clamp: 2; /* n */ 
+	-webkit-box-orient: vertical;
+	
+	margin-bottom: 10px;
+}
+
+/* 썸네일 커지는 효과 */
+.card-img-top:hover{
+	cursor: pointer;
+	transform: scale(1.05); 
+	transition: all 0.3s;
+}
+/* 썸네일 커질 때 이미지 안넘어가게 하기 */
+.card-imageDiv{
+	overflow: hidden;
+}
+
+@keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, 100%, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translateZ(0);
+        }
+}
+ 
+.itemListDiv {
+    position: relative;
+    animation: fadeInUp 0.8s;
+}
+
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<div class="titleDiv">
+				<h3>여행 목록 (${itemList.size() }건)</h3>
+			</div>
+			<c:choose>
+				<c:when test="${empty itemList }">
+					<div>여행 목록이 존재하지 않습니다.</div>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${itemList }" var="item">
+						<div class="itemListDiv">
+							<div class="row">
+								<div class="col-md-4" style="text-align: center;">
+									<div class="card-imageDiv" onclick="location.href='/item/itemDetail?cateCode=${item.cateCode }&itemCode=${item.itemCode}';" style="border-radius: 20px;">
+										<img alt="" src="/resources/images/${item.attachedImgName }" class="card-img-top" style="width: 378px; height: 270px;">
+									</div>
+								</div>
+								<div class="col-md-8" style="padding-left: 30px;">
+									<div>패키지 > 국내 > ${item.itemCateVO.cateName }</div>
+									<div><h4><strong>${item.itemName }</strong></h4></div>
+									<div class="detailDiv">${item.itemDetail }</div>
+									<div>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-range" viewBox="0 0 16 16">
+										  <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1zM1 9h4a1 1 0 0 1 0 2H1V9z"/>
+										  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+										</svg> ${item.tripDate } (<strong>${item.startDate } ~ ${item.endDate }</strong>)
+									</div>
+									<div style="font-size: 20px;">
+										<span style="color: #725efe;">★</span> ${item.rateAvg }</div>
+									<div class="btnDiv">
+										<div style="display: flex; justify-content: flex-end;">
+											<div style="font-size: 28px; font-weight: bold; color: #111; margin-bottom: 10px;"><fmt:formatNumber pattern="#,###원">${item.itemPrice }</fmt:formatNumber></div>
+										</div>
+										<div style="display: flex; justify-content: flex-end;">
+											<div class="btns" style="width: 200px;" onclick="location.href='/item/itemDetail?cateCode=${item.cateCode }&itemCode=${item.itemCode}';">자세히보기</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+</div>
+</body>
+</html>

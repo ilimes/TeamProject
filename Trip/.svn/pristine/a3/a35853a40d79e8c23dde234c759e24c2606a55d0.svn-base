@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+table {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+}
+tbody td {
+	border-bottom: 1px solid #eeeeee;
+}
+tbody td:nth-child(odd){
+	font-size: 18px;
+	font-weight: bold;
+}
+.btnDiv{
+	display: flex;
+	justify-content: center;
+	margin: 20px 0 20px 0;
+}
+.btns{
+	margin: 7px;
+}
+.modal .btns{
+	height: 40px;
+}

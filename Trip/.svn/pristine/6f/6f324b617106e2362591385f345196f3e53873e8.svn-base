@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+.regTable{
+	text-align: center;
+	vertical-align: middle;
+}
+textarea {
+	resize: none;
+}
+.regTable tr > td:nth-child(1) {
+	width: 8%;
+}
+.regTable tr > td:nth-child(2) {
+	width: 35%;
+}
+.regTable tr > td:nth-child(3) {
+	width: 22%;
+}
+.regTable tr > td:nth-child(4) {
+	width: 35%;
+}
+.regTable input[type=date]{
+	letter-spacing: 3px;
+	width: 27%; 
+	text-align: center;
+}
+.regTable tr td:first-child{
+	font-weight: bold;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}

@@ -1,0 +1,17 @@
+package com.project.trip.member.vo;
+
+public class MemberVO {
+	private String memId;
+	private String memPw;
+	private String memPwChk;
+	private String memName;
+	private String memGender;
+	private String memTell;
+	private String memAddr;
+	private String isAdmin;
+	private String joinDate;
+	
+	private String[] memTells;
+	private String[] memAddrs;
+	private String[] memIds;
+}

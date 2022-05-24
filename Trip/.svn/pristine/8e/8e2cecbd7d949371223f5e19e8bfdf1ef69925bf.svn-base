@@ -1,0 +1,23 @@
+$('#selectEmail').change(function(){
+	 $("#selectEmail option:selected").each(function () {
+		 if($(this).val()== '1'){
+			 	$("#memEmail").val('');
+			 	$("#memEmail").attr("disabled",false);
+		 }else{ 
+				$("#memEmail").val($(this).text());
+				$("#memEmail").attr("disabled",true);
+		 }
+  }); 
+});
+
+
+function sample4_execDaumPostcode() {
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  var roadAddr = data.roadAddress; // 도로명 주소 변수
+				  document.getElementById("memZipCode").value = data.zonecode;
+                  document.getElementById("memAddr").value = roadAddr;
+                  
+              }
+          }).open();
+      }

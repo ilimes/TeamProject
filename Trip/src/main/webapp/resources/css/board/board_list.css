@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+.titleDiv{
+	border-bottom: 2px solid #cccccc;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight: bold;
+	line-height: 1.3em;
+}
+table {
+	width: 100%;
+	text-align: center;
+	line-height: 45px;
+}
+thead td{
+	font-size: 19px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom: 1px solid black;
+}
+tbody td {
+	border-bottom: 1px solid #eeeeee;
+}
+.noticeTr{
+	color: #5e2bb8;
+	font-weight: bold;
+	/* background-color: #DDDDDD; */
+	background: linear-gradient(120deg,#eee,#ddd,#eee);
+}
+.pageDiv{
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+.btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0 20px 0;
+}
+
+/* 부트스트랩 페이징 디자인 변경 */
+
+.page-link {
+	color: #000; 
+	background-color: #fff;
+	border: 1px solid #ccc; 
+}
+
+.page-item.active .page-link {
+	z-index: 1;
+	color: #fff;
+	background: linear-gradient(120deg,#725efe,#8e44ad);
+	border-color: #ccc;
+}
+
+.page-link:focus, .page-link:hover {
+	color: #000;
+	background-color: #fafafa; 
+	border-color: #ccc;
+}

@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.noticeDiv{
+	display: inline-block; vertical-align: middle; padding-top: 0px; margin-left: 50px; width: 450px; height: 45px; text-align: left;
+}
+
+/* 롤링 공지사항 */
+
+.notice{width:100%; height:50px; overflow:hidden; background-color:#fff;}
+.rolling{position:relative; width:100%; height:auto;}
+.rolling li{width:100%; height:50px; line-height:50px;}
+.rolling_stop{display:block; width:100px; height:20px; background-color:#000; color:#fff; text-align:center;}
+.rolling_start{display:block; width:100px; height:20px; background-color:#000; color:#0f0; text-align:center;}
+
+.notice ol, .notice ul{
+	padding-left: 0;
+}

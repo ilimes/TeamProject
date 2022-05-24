@@ -1,0 +1,64 @@
+function login(){
+		var id = document.getElementById('memId').value;
+		var pw = document.getElementById('memPw').value	;
+		
+		 var email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+
+		 //test 함수 == 문자열이 정규식을 만족하는지 판별하는 함수
+		 //조건을 만족하면 true를 반환, 만족하지 못하면 false반환
+		if(id == ''){
+			var modalBody = document.getElementById('idNull');
+		
+			var str = "";
+			str += '<div>아이디를 입력해주세요</div>';
+			modalBody.innerHTML = str;
+			if(pw == ''){
+				var modalBody = document.getElementById('pwNull');
+			
+				var str = "";
+				str += '<div>비밀번호를 입력해주세요</div>';
+				modalBody.innerHTML = str;
+			}
+		}
+		else if(email.test(id)){
+		 	if(pw == ''){
+			var modalBody = document.getElementById('pwNull');
+		
+			var str = "";
+			str += '<div>비밀번호를 입력해주세요</div>';
+			modalBody.innerHTML = str;
+  
+			}
+			else{
+			
+				$.ajax({
+					url: '/member/login', //요청경로
+					type: 'post',
+					data: {'memId':id, 'memPw':pw}, //필요한 데이터 '데이터이름':값
+					success: function(result) {
+						//ajax 실행 성공 후 실행할 코드 작성
+						if(result){
+							alert('로그인 성공');
+							location.href = '/item/mainPage';
+						}
+						else{
+							alert('아이디 또는 비밀번호를 잘못 입력하셨습니다.');
+						}
+							
+					},
+					error: function() {
+						//ajax 실행 실패 시 실행되는 구간
+						alert('실패');
+					}
+				});
+			}
+		}
+			 else{     
+				var modalBody = document.getElementById('idNull');
+			
+				var str = "";
+				str += '<div>아이디는 이메일 주소 형식으로 입력해주세요.</div>';
+				modalBody.innerHTML = str;
+			 }
+}
+	

@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.loginForm{
+    width: 580px;
+    height: 500px;
+    margin: 0 auto;
+    padding: 10px 40px;
+    border-radius: 10px;
+}
+.loginForm h3{
+	text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+.btns, .btn{
+	padding: 0;
+	font-size: 15px;
+	width: 150px;
+	height: 40px;
+	margin: 0 auto;
+}
+.btnDiv{
+	width: 350px;
+	margin: 0 auto;
+	display: block;
+}
+</style>
+</head>
+<body>
+<div class="loginForm">
+	<h3>
+		${findIdInfo.memName }님의 <br>
+		아이디는 ${findIdInfo.memId } 입니다.
+	</h3>
+	<div class="btnDiv">
+		<input type="button" class="btn btn-secondary" value="로그인" onclick="location.href='/member/loginForm';" >
+		<input type="button" class="btn btn-secondary" value="비밀번호 찾기" onclick="location.href='/member/findPwForm';" style="float: right;">
+	</div>
+</div>
+</body>
+</html>

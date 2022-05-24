@@ -1,0 +1,153 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/typeit@8.3.3/dist/index.umd.js"></script>
+<title>Insert title here</title>
+<link href="/resources/css/main/main.css" rel="stylesheet">
+<style type="text/css">
+	:root {
+		--ti-cursor-margin-left: 0.1em;
+		--ti-cursor-color: black;
+	}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<div>
+				<div style="height: 70px;">
+					<h4 id="titleH4">고객님,<br><strong>어떤 여행을 꿈꾸시나요 :)</strong></h4>
+				</div>
+				<script>
+					document.addEventListener('DOMContentLoaded', () => {
+						new TypeIt('#titleH4')
+							.pause(1000)
+							.go();
+					});
+				</script>
+				<div class="row">
+					<div class="col-md-12">
+						<input name="whereTrip" id="searchMainText" type="text" class="form-control"
+							placeholder="어디로 떠나세요?" onkeydown="if (event.keyCode == 13) { search(); }" style="height: 41px;">
+					</div>
+					<div class="col-md-12">
+						<span style="font-size: 18px; margin: 0 10px 0 10px;">출발일</span> <input name="whenTrip" id="searchMainDate" type="date" class="form-control datepicker"
+							onkeydown="if (event.keyCode == 13) { search(); }" style="display: inline-block; width: 316.3px;">
+					</div>
+					<!-- <div class="col-md-6">
+						<input name="whereTrip" type="text" class="form-control"
+							placeholder="인천/김포 출발">
+					</div>
+					<div class="col-md-6">
+						<input name="whereTrip" type="text" class="form-control"
+							placeholder="여행시작일 선택">
+					</div> -->
+					<div class="col-md-12" style="margin-bottom: 20px;">
+						<div>
+							<button type="button" class="btnBlack" onclick="search();">검색</button>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div>
+							<h4>
+								<strong>베스트후기</strong><span style="font-size: 17px; margin-left: 5px; cursor: pointer;" onclick="location.href='/item/bestReview?menuCode=MENU_002';"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+								  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+								  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+								</svg> 더보기</span>
+							</h4>
+						</div>
+						<div>
+							<table>
+								<colgroup>
+									<col width="20%">
+									<col width="50%">
+									<col width="30%">
+								</colgroup>
+								<thead>
+									<tr>
+										<td>순위</td>
+										<td>제목</td>
+										<td>추천수</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${empty reviewList }">
+											<tr>
+												<td colspan="6">베스트후기가 존재하지 않습니다.</td>
+											</tr>
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${reviewList }" var="review" varStatus="vS">
+													<tr>
+														<td>${vS.index + 1  }위</td>
+														<td><div class="reviewTitle"><a href="/item/reviewDetail?menuCode=MENU_002&reviewNum=${review.reviewNum }">${review.title }</a></div></td>
+														<td>${review.likesCnt }</td>
+													</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 imageSlide">
+			<section class="carousel" aria-label="Gallery">
+				<ol class="carousel__viewport">
+					<li id="carousel__slide1" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper">
+							<a href="#carousel__slide4" class="carousel__prev">Go to
+								last slide</a> <a href="#carousel__slide2" class="carousel__next">Go
+								to next slide</a>
+						</div>
+					</li>
+					<li id="carousel__slide2" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide1"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide3" class="carousel__next">Go to next
+							slide</a>
+					</li>
+					<li id="carousel__slide3" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide2"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide4" class="carousel__next">Go to next
+							slide</a>
+					</li>
+					<li id="carousel__slide4" tabindex="0" class="carousel__slide">
+						<div class="carousel__snapper"></div> <a href="#carousel__slide3"
+						class="carousel__prev">Go to previous slide</a> <a
+						href="#carousel__slide1" class="carousel__next">Go to first
+							slide</a>
+					</li>
+				</ol>
+				<aside class="carousel__navigation">
+					<ol class="carousel__navigation-list">
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide1" class="carousel__navigation-button">Go
+								to slide 1</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide2" class="carousel__navigation-button">Go
+								to slide 2</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide3" class="carousel__navigation-button">Go
+								to slide 3</a></li>
+						<li class="carousel__navigation-item"><a
+							href="#carousel__slide4" class="carousel__navigation-button">Go
+								to slide 4</a></li>
+					</ol>
+				</aside>
+			</section>
+		</div>
+	</div>
+</div>
+<script src="/resources/js/main/main.js?ver=2" type="text/javascript"></script>
+</body>
+</html>

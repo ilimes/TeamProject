@@ -1,0 +1,36 @@
+package com.project.trip.buy.controller;
+
+
+
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.trip.buy.service.BuyService;
+
+
+
+	
+	
+@Controller
+@RequestMapping("/buy")
+public class BuyController {
+	
+	@Resource(name = "buyService")
+	BuyService buyService;
+	
+	@GetMapping("/tripBook")
+	@ResponseBody
+	public void tripBook(Model model, String data, HttpSession session) {
+		
+		
+	}
+	
+}
+

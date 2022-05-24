@@ -1,0 +1,11 @@
+.replyDiv{
+	width: 70%;
+	margin: 0 auto;
+	vertical-align: middle;
+}
+.reply{
+	resize: none;
+	border-radius: 4px;
+	padding: 6px;
+	white-space:pre-line;
+}

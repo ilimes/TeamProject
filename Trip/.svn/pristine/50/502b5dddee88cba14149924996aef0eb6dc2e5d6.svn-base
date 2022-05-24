@@ -1,0 +1,67 @@
+package com.project.trip.admin.controller;
+
+import javax.annotation.Resource;
+
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.project.trip.admin.service.AdminService;
+import com.project.trip.admin.vo.BookSearchVO;
+import com.project.trip.item.vo.ItemVO;
+import com.project.util.TripUtil;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+		
+	@Resource(name = "adminService")
+	private AdminService adminService;
+	
+	//상품등록 페이지, 관리자 메뉴 클릭시 나오는 페이지
+	@GetMapping("/itemManage")
+	public String adminMenu(Model model, BookSearchVO bookSearchVO) {
+		
+		
+		//이달의 1일과 오늘 날짜를 구함
+				String firstDate = TripUtil.getStartDateToString();
+				String nowDate = TripUtil.getNowDateToString();
+				
+				if(bookSearchVO.getSearchFromDate() == null) {
+					bookSearchVO.setSearchFromDate(firstDate);
+				}
+				
+				
+				if(bookSearchVO.getSearchToDate() == null) {
+					bookSearchVO.setSearchToDate(nowDate);
+				}
+		
+		
+		
+		model.addAttribute("adminMenuList", adminService.selectAdminMenuList());
+		model.addAttribute("areaList", adminService.selectItemCategory());
+		
+		
+		
+		return "admin/reg_item";
+	}
+	
+	@GetMapping("/memberManage")
+	public String memberManage() {
+		
+		return "admin/member_manage";
+	}
+	
+	@PostMapping("/regItem")
+	public String regItem(ItemVO itemVO) {
+		
+		
+		adminService.regItem(itemVO);
+		
+		return "redirect:/admin/itemManage";
+	}
+	
+}
