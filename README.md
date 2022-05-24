@@ -58,20 +58,20 @@
 <details><summary>회원
 </summary>
 
-테스트
+ 
 </details>
 <details><summary>상품
 </summary>
 
-테스트
+ 
 </details>
 <details><summary>게시판
 </summary>
 
-테스트
+ 
 </details>
 <details><summary>부가기능
 </summary>
 
-테스트
+ 
 </details>
