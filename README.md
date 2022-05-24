@@ -15,14 +15,14 @@
 ### 개발환경
 - Programming Language : <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
 - Web Framework : <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
-- Web Language : HTML5 CSS3
-- CSS Framework : Bootstrap
-- Bulid tool : Apache Maven
-- DataBase : Oracle
+- Web Language : <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"> 
+- CSS Framework : <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white"> 
+- Bulid tool : <img src="https://img.shields.io/badge/Apache Maven-C71A36?style=for-the-badge&logo=Apache Maven&logoColor=white"> 
+- DataBase : <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"> 
 - DataBase Cloud : Oracle Cloud
 - SQL Mapper : MyBatis
-- Web Library : jQuery Socket.io / Ajax / Tiles / Log4j / JSON / Nurigo
-- Version Control : SVN
-- Browser : Google Chrome
+- Web Library : jQuery / Ajax / Tiles / Log4j / JSON
+- Version Control : <img src="https://img.shields.io/badge/Subversion-809CC9?style=for-the-badge&logo=Subversion&logoColor=white"> 
+- Browser : <img src="https://img.shields.io/badge/Google Chrome-4285F4?style=for-the-badge&logo=Google Chrome&logoColor=white"> 
 - OS : <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=Windows&logoColor=white"> 
 - IDE : <img src="https://img.shields.io/badge/Spring Tool Suite4-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
