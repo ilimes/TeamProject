@@ -7,12 +7,12 @@
 ### 팀원소개
 - 이대규, 이주영, 안영빈
 
-### 프로젝트소개
-- 한빛여행사는 여행 상품을 예약하는 기능과 ... 코로나가 완화됨에 따라 전국 관광지를 알리자는 취지에서 기획, 제작하였습니다.
+### 프로젝트 소개
+- 한빛여행사는 코로나가 완화됨에 따라 전국 관광지를 알리자는 취지에서 기획, 제작하였습니다.
 
 ### 기능요약
-1. 여행사의 기본기능인 상품구매, 여행후기 작성 및 조회, 고객센터 이용을 할 수 있습니다.
-2. 부가기능으로 날씨정보, 오픈채팅, 추천경로 찾기가 가능합니다.
+1. 여행상품구매, 여행후기 작성 및 조회, 고객센터, 관리자메뉴 기능이 있습니다.
+2. 부가기능으로 날씨정보, 오픈채팅, 추천경로 찾기가 있습니다.
 
 ### 개발환경
 - Programming Language : <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
@@ -29,5 +29,49 @@
 - OS : <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=Windows&logoColor=white"> 
 - IDE : <img src="https://img.shields.io/badge/Spring Tool Suite4-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 
+### 담당 파트
+- 이대규 - 게시판 기능, 상품 기능, 부가기능, 전체 디자인
+- 이주영 - 관리자 기능, 상품 기능, 부가기능
+- 안영빈 - 회원 기능, 상품 기능
+
 ### 세부기능소개
-- 가나다라
+<details><summary>관리자
+</summary>
+
+- #### 상품목록
+  <div>등록된 상품의 상품코드, 상품명, 여행기간, 가격을 조회하는 기능입니다.</div>
+- #### 상품등록
+  <div>상품명, 가격, 여행기간, 지역, 상세주소, 여행지 상세정보, 이미지를 등록하는 기능입니다. </div>
+  <div>지도를 클릭하면 해당 위치에 마커가 찍히고 상세주소란에 마커의 주소정보가 입력됩니다.</div>
+  <div>주소 검색으로 대략적인 위치를 찾고 마커로 상세위치를 설정할 수 있습니다.</div>
+- #### 상품수정
+  <div>등록된 상품의 </div>
+- #### 상품삭제
+- #### 회원목록
+- #### 회원탈퇴승인
+- #### 예약조회
+- #### 예약취소
+- #### 공지사항관리
+- #### 문의관리
+  
+</details>
+<details><summary>회원
+</summary>
+
+테스트
+</details>
+<details><summary>상품
+</summary>
+
+테스트
+</details>
+<details><summary>게시판
+</summary>
+
+테스트
+</details>
+<details><summary>부가기능
+</summary>
+
+테스트
+</details>
