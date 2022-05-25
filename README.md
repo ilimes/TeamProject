@@ -81,12 +81,27 @@
 <details><summary>상품
 </summary>
 
+- #### 상품구매
+  <div></div>
+- #### 상품 상세정보
+  <div></div>
+  <div>또한 상품 페이지에서는 여행 위치 정보를 확인할 수 있습니다. 여행 위치 정보는 카카오 지도 API를 이용했습니다.</div>
+- #### 찜 목록 (장바구니)
+  <div></div>
  
 </details>
 <details><summary>게시판
 </summary>
 
- 
+- #### 공지사항
+  <div></div>
+- #### 1:1 문의
+  <div></div>
+- #### 일반 후기
+  <div></div>
+- #### 베스트 후기
+  <div>후기의 추천수를 기준으로 상위 10개의 항목만 나타내는 게시판입니다.</div>
+  
 </details>
 <details><summary>부가기능
 </summary>
